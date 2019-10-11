@@ -1,0 +1,100 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.36067222062625687000,
+       0.95376156578355853000,
+       0.44381850140472007000,
+       1.02209169634785520000) => (1164,960)
+   }
+
+
+
+   formula {
+     
+      z = current;
+      c = current;
+      zold = [0, 0];
+
+      $xmax = 0;
+      $xmin = 0;
+      $xtot = 0;
+      $ymax = 0;
+      $ymin = 0;
+      $ytot = 0;
+      $mmax = 0;
+      $mmin = 0;
+      $mtot = 0;
+     
+      $stop = 0;
+      $tolerance = 1e-6;
+
+      while($stop == 0 && $count < 10)
+      {
+         if(abs(real(z) - real(zold)) <= $tolerance &&
+            abs(imag(z) - imag(zold)) <= $tolerance)
+         {
+            $stop = 1;
+         }
+         else
+         {
+            $number = 4;
+
+            if(fmod($count, $number*2) == 0) { z += csc(z); }
+            elseif(fmod($count, $number) == 0) { z += sec(z); }
+            else
+            {
+               f_z  = tan(z);
+               fp_z = sec(z)*sec(z);
+
+               zold = z;
+               z    = z - fp_z / f_z;
+
+               value = csc(z);
+               $x = real(value);
+               $y = imag(value);
+               $m = mag(value);
+
+               $xtot = $xtot + $x;
+               $ytot = $ytot + $y;
+               $mtot = $mtot + $m;
+
+               $xmax = max($xmax, $x);
+               $xmin = min($xmin, $x);
+
+               $ymax = max($ymax, $y);
+               $ymin = min($ymin, $y);
+
+               $mmax = max($mmax, $m);
+               $mmin = min($mmin, $m);
+            }
+         }
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);
+         $g = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+         $b = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, .5);
+      
+      }
+
+      set_color($r, $g, $b);
+   }
+}

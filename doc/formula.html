@@ -1,0 +1,165 @@
+<HTML>
+ <HEAD><TITLE>Formula</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Formula</H2>
+  <HR>
+  <P>
+  The purpose of the <B>formula</B> section is to define the fractal equation
+that we use to actually create an image.  Before we discuss the format of
+the <B>formula</B> section, here is an overview of how fractal images
+are generated:
+<P>
+The <A HREF="mapping.html">mapping</A> section establishes a relationship
+between a region in the complex plane and an image size in pixels.  As
+an example, consider this mapping:
+<P>
+<PRE>
+   mapping {
+      (-2, -2, 2, 2) => (100, 100)
+   }
+</PRE>
+<P>
+The resulting image will be 100 pixels by 100 pixels so a total of 10,000
+pixels will need to be assigned a color to generate the image.  It is the
+job of the <B>formula</B> section to assign those color values.  The
+<B>formula</B> section will be executed once for each pixel - a total of
+10,000 times for this example.
+<P>
+A key concept for the <B>formula</B> section is the idea of
+"the current point".  In the example above, we'll create an image that is
+100 pixels wide and 100 pixels tall - the steps the program goes through
+to accomplish this are as follows:
+<P>
+<OL>
+ <LI>Take the starting and ending real values (-2 and 2 for this example)
+     and using the number of horizontal pixels, determine the needed step
+     value so that the correct number of pixels is generated.  In this case,
+     we want the first pixel to correspond the the first value (-2) and that
+     last (100th) pixel to correspond the the last value (2).
+     <P>
+     The formula the program uses to determine the step value is:
+     <PRE>
+        (end_value - start_value) / (number_of_pixels - 1)
+     </PRE>
+     <P>
+     So for our example we end up with:
+     <P>
+     <PRE>
+        (2 - -2) / (100 - 1) = .0404040404
+     </PRE>
+     <P>
+     The horizontal values (in real coordinates) corresponding to the pixel
+     values then would be:
+     <P>
+     <TABLE BORDER=1>
+      <TR><TH>pixel number</TH><TH>real coordinate value</TH></TR>
+      <TR><TD>0</TD><TD>-2</TD>
+      <TR><TD>1</TD><TD>-1.9595</TD>
+      <TR><TD>2</TD><TD>-1.9191</TD>
+      <TR><TD>3</TD><TD>-1.8787</TD>
+      <TR><TD>...</TD><TD>...</TD>
+      <TR><TD>96</TD><TD>1.8787</TD>
+      <TR><TD>97</TD><TD>1.9191</TD>
+      <TR><TD>98</TD><TD>1.9595</TD>
+      <TR><TD>99</TD><TD>2</TD>
+     </TABLE>
+ <P>
+ <LI>Take the starting and ending imaginary values (-2 and 2 for this example)
+     and perform a similar calculation to determine the appropriate step value
+     so that the correct number of vertical pixels is generated.  In this
+     case since the imaginary values are the same as the real values and the
+     height in pixels is the same as the width in pixels, the step value will
+     be: .0404040404 in the imaginary direction, just as it was in the real
+     direction.
+     <P>
+ <LI>Having calculated the two step values, the program then loops through all
+     the pixels and gives the <B>formula</B> section a chance to assign the
+     color for each pixel.  The logic looks like this:
+     <P>
+     <PRE>
+        for each pixel in the vertical direction
+           for each pixel in the horizontal direction
+              determine the current point
+              execute the formula section to color this pixel
+           end horizontal loop
+        end vertical loop
+     </PRE>
+     <P>
+     Using the real and imaginary step values, the program calculates the
+     current point, loads this value into the predefined variable
+     <B>current</B> and then executes the <B>formula</B> section.
+ <P>
+ <U><H2>Structure of the formula section</H2></U>
+<P>
+<PRE>
+   formula
+   {
+      zero or more statements
+
+      while(boolean_expression)
+      {
+         zero or more statements
+      }
+
+      zero or more statements
+   }
+</PRE>
+We refer to <B>statements</B> in three places above, more formally the
+definition of <A NAME="statements"><B>statements</B></A> is:
+<UL>
+ <P>
+ One or more of the following:
+ <P>
+ <UL>
+  <LI>A color assignment statement
+  <LI>A double variable assignment statement
+  <LI>A complex variable assignment statement
+  <LI>A conditional statement
+  <LI>A for statement
+  <LI>A print/println statement
+  <LI>break or continue statement
+ </UL>
+</UL>
+<P>
+A detailed explanation of the various statements can be
+found <A HREF="statements.html">here</A>
+<P>
+<U><H4>while</H4></U>
+<P>
+The sequence of events that occurs when we are executing the formula section
+for a particular pixel is:
+<P>
+<UL>
+ <LI>(as we mentioned before) the current real and imaginary coordinates
+     are loaded into the predefined complex variable <B>'current'</B>
+ <P>
+ <LI>the statements before the while loop are executed
+ <P>
+ <A NAME="count">
+ <LI>Another predefined variable <B>$count</B> is set to zero - then
+     we begin executing the following:
+     <PRE>
+     while boolean_expression is true (non zero)
+        execute the statements inside the while loop
+        add 1 to the value of <B>$count</B>
+     end while
+     </PRE>
+ <P>
+ <LI>once boolean_expression has become false (zero) the statements after
+     the while loop are executed
+</UL>
+<P>
+The final point about the formula section concerns color assignment.  Each
+time the formula section is executed, whatever value is assigned to the
+current pixel (via an indexed or direct color assignment statment) determines
+the color that pixel will have in the resulting image.  Though the set_color
+statement can occur anywhere, is usually only occurs in the set of statements
+that follow the while loop.  The reason is that the statements inside the
+while loop get executed many, many times and color assignment typically
+needs to be done only once - after the while loop has terminated.
+<P>
+Futher details about color assignment can be found
+<A HREF="coloring_techniques.html">here</A>
+ </BODY>
+</HTML>

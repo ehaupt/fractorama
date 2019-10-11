@@ -1,0 +1,84 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.29432495488911670000,
+       -3.00699169736842190000,
+       5.42627500000000400000,
+       3.01970625000000180000) => (457*16, 357*16)
+   }
+
+   formula {
+
+      
+      z = current;
+      p = [0.318623, 0.429799];
+
+      $v1total = 0; $v2total = 0; $v3total = 0;
+      $v1min   = 0; $v2min   = 0; $v3min   = 0;
+      $v1max   = 0; $v2max   = 0; $v3max   = 0;
+
+      while($count < 20 && ssq(z) < 400)
+      {
+         // The formula used here should match the one
+         // used in 'NOTE 1' in seek.jfd, except we use p instead of current
+
+         z = sin(z) + p;
+
+         value = sec(z);
+
+         $v1 = mag(value);
+         $v2 = mag(value^2);
+         $v3 = mag(value^3);
+
+         $v1total += $v1; $v2total += $v2; $v3total += $v3;
+
+         $v1min = min($v1, $v1min);
+         $v2min = min($v2, $v2min);
+         $v3min = min($v3, $v3min);
+
+         $v1max = max($v1, $v1max);
+         $v2max = max($v2, $v2max);
+         $v3max = max($v3, $v3max);
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($v1total / $count) - $v1min) / ($v1max - $v1min);
+         $g = (($v2total / $count) - $v2min) / ($v2max - $v2min);
+         $b = (($v3total / $count) - $v3min) / ($v3max - $v3min);
+
+         $r = get_sin_color($r, 255, 1); 
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+/* XPM */
+static const char *_zoom[] = {
+/* width height num_colors chars_per_pixel */
+"    17    17        7            1",
+/* colors */
+". c None",
+"# c #999900",
+"a c #666600",
+"b c #333300",
+"c c #ffff99",
+"d c #ffffff",
+"e c #000000",
+/* pixels */
+"...eeee..........",
+".eeddddee........",
+".eddeedde........",
+"edddeeddde.......",
+"edeeeeeede.......",
+"edeeeeeede.......",
+"edddeeddde.......",
+".eddeedde........",
+".eeddddeeeb......",
+"...eeee.e#ab.....",
+"........ec#ab....",
+".........ec#ab...",
+"..........ec#ab..",
+"...........ec#ab.",
+"............ec#ab",
+".............ec#b",
+"..............ee."
+};

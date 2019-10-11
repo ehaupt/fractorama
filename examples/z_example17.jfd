@@ -1,0 +1,71 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-0.38356164383561641706,
+       -0.73888888888888892836,
+       0.41712328767123285633,
+       -0.18305555555555558245) => (1280,666)
+   }
+
+   // Set up our colors - here we have two sets of colors, the first
+   // a series of green values, the second a series of blue values
+
+   colors {
+      define {
+         gradient(361) {
+            [204 255 204] [0 102 0] [204 255 204]
+         }
+      }
+      define {
+         gradient(361) {
+            [204 255 255][0 102 102][204 255 255]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 10 && magnitude(z) < 4)
+      {
+         // Formula for iteration, note that the abrupt changes in
+         // color that characterize this fractal are due to the use
+         // of 'log' in its formula
+
+         z = log(cos(z) - c);
+         c = log(sin(c) + z);
+      }
+
+      // We know that magnitude(z) will be >= 0 (since magnitude(z) is the
+      // distance of z from the origin) but we really don't know what
+      // its actual value will be, but by doing:
+      //
+      // fmod(magnitude(z), 2)
+      //
+      // We produce a value in the range 0 => 2, which when multiplied by
+      // 360 gives us a range (0 => 720) which spans all the entries
+      // in our color table
+
+      set_color(fmod(magnitude(z), 2) * 360);
+   }
+}
+
+
+

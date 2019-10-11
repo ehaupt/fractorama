@@ -1,0 +1,137 @@
+<HTML>
+ <HEAD><TITLE>Attributes</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Complex Attributes</H2>
+  <HR>
+  <P>
+  There are six available attributes for any complex number:
+  <P>
+   <UL>
+    <LI>real
+    <LI>imaginary
+    <LI>magnitude
+    <LI>sum_of_squares
+    <LI>degrees
+    <LI>radians
+   </UL>
+  <P>
+  Below is a diagram showing the complex number <B>[4, 3]</B>.  The
+  attribute values for <B>real, imaginary, magnitude and degrees</B> are
+  labeled for that point.
+  <P>
+  <A NAME="graph1">
+  <IMG SRC="graph1.png">
+  <P>
+  The <B>sum_of_squares</B> attribute is simply the <B>magnitude</B> attribute
+  without taking the square root.  For the point <B>[4, 3]</B> shown in
+  the diagram the values of <B>magnitude</B> and <B>sum_of_squares</B> are
+  as follows:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>attribute</TH>
+    <TH>formula</TH>
+    <TH>value</TH>
+   </TR>
+
+   <TR>
+    <TD>magnitude</TD>
+    <TD>sqrt(4 * 4 + 3 * 3)</TD>
+    <TD>5</TD>
+   </TR>
+
+   <TR>
+    <TD>sum_of_squares</TD>
+    <TD>4 * 4 + 3 * 3</TD>
+    <TD>25</TD>
+   </TR>
+  </TABLE>
+  <P>
+  The reason for having both <B>sum_of_squares</B> and <B>magnitude</B> is
+  that since the <B>magnitude</B> calculation involves taking a square
+  root it is slower than the <B>sum_of_squares</B> calculation.  It
+  is often possible to create an equivalent (but more quickly generated) fractal
+  image by using <B>sum_of_squares</B> instead of <B>magnitude</B>
+  <P>
+  <A NAME="radians">
+  The attribute <B>radians</B> measures the angle a point makes with the
+  origin, just like <B>degrees</B>, only the units are different.  A
+  good analogy for the relationship between <B>degrees</B> and <B>radians</B>
+  would be the relationship between the fahrenheit and celsius temperature
+  scales (they both measure the same thing but the results are expressed in
+  different units).
+  <P>
+  The relationship between <B>degrees</B> and <B>radians</B> is based upon
+  this equation:
+  <P>
+  <CODE>
+  360 degrees = 6.28 radians
+  </CODE>
+  <P>
+  <A NAME="pi">
+  In actuality, 360 degrees does not equal precisely 6.28 radians - it equals
+  2 * pi where pi is approximately 3.14159265358979323846.
+  <P>
+  Here is a diagram showing a number of angles in <B>degrees</B> and their
+  equivalent values in <B>radians</B>:
+  <P>
+  <IMG SRC="piechart.png">
+  <P>
+  The formulas for converting between degrees and radians are as follows:
+  <P>
+  <CODE>
+  degrees = 57.2958 * radians
+  </CODE>
+  <P>
+  and
+  <P>
+  <CODE>
+  radians = 0.017453 * degrees
+  </CODE>
+  <P>
+  The reason for having both <B>radians</B> and <B>degrees</B> is that
+  the trigonometric functions (sin, cos, etc.) all expect the values supplied
+  to them to be measured in <B>radians</B>.
+  <P>
+  Finally, nearly all the attributes have a long and short form
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>attribute</TH>
+    <TH>short form</TH>
+    <TH>examples</TH>
+   </TR>
+   <TR>
+    <TD>real</TD>
+    <TD>real</TD>
+    <TD>real(z), real([1, 2])</TD>
+   </TR>
+   <TR>
+    <TD>imaginary</TD>
+    <TD>imag</TD>
+    <TD>imaginary(z), imag([2, 3])</TD>
+   </TR>
+   <TR>
+    <TD>magnitude</TD>
+    <TD>mag</TD>
+    <TD>magnitude(z), mag([3, 4])</TD>
+   </TR>
+   <TR>
+    <TD>sum_of_squares</TD>
+    <TD>ssq</TD>
+    <TD>sum_of_squares(z), ssq([4, 5])</TD>
+   </TR>
+   <TR>
+    <TD>degrees</TD>
+    <TD>deg</TD>
+    <TD>degrees(z), deg([5, 6])</TD>
+   </TR>
+   <TR>
+    <TD>radians</TD>
+    <TD>rad</TD>
+    <TD>radians(z), rad([6, 7])</TD>
+   </TR>
+  </TABLE>
+ </BODY>
+</HTML>

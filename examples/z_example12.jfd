@@ -1,0 +1,67 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (1.21826018808777410000,
+       1.59213737796373780000,
+       1.33017241379310350000,
+       1.71661436541143650000) => (1280,960)
+   }
+
+   // Set up our colors - our first set of colors (following define(0))
+   // will be a set of yellow shades.  Note that our gradient only
+   // spans 72 color entries and we use the repeat(5) command to replicate
+   // that gradient 5 times so we get a total of 360 entries.
+   // Our second set of colors is a normal gradient of green shades.
+
+   colors {
+      define(0){
+         repeat(5){
+            gradient(72){
+               [204 153 0]
+               [255 255 204]
+               [204 153 0]
+            }
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [0 51 0]
+            [204 255 204]
+            [0 51 0]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      z = [0, 0];
+      c = current;
+
+      while($count < 100 && magnitude(z) < 2)
+      {
+         z = log(c) * cos(z);
+      }
+
+      // We use a slightly different coloring technique here - we know that:
+      //
+      // -1 <= cos(magnitude(z))            <= 1, and
+      // 0  <= abs(cos(magnitude(z)))       <= 1, then
+      // 0  <= abs(cos(magnitude(z))) * 360 <= 360
+      //
+      // We add degrees(z) to our first value (which will range between 0
+      // and 360) thus producing a color index across 0 => 720 (which
+      // spans all our defined color values)
+
+      set_color(abs(cos(magnitude(z))) * 360 + old_deg(z));
+   }
+}

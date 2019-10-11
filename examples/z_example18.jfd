@@ -1,0 +1,73 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.51875000000000000000,
+       -1.02499999999999990000,
+       0.53125000000000000000,
+       1.02499999999999990000) => (1280,960)
+   }
+
+   // Set up our colors - here we effectively have two color tables,
+   // the first a set of green colors, the second a set of blue colors
+
+   colors {
+      define(0) {
+         gradient(361) {
+            [0 51 0][153 255 204][0 51 0]
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [0 0 51][153 204 255][0 0 51]
+         }
+      }
+
+   }
+
+   // Set up our fractal, note that this formula is the standard
+   // mandelbrot type fractal
+
+   formula {
+      c = current;
+      z = [0, 0];
+
+      while($count < 50 && magnitude(z) < 2)
+      {
+         z = z*z + c;
+      }
+
+      // We select between the green and blue shades as follows:
+      //
+      // fmod($count, 2) * 360 =>   0 (green shades, when $count is even)
+      // fmod($count, 2) * 360 => 360 (blue shades, when $count is odd)
+      //
+      // To select the specific color entry, we then add:
+      //
+      // (1 + cos(radians(z))) * 180
+      //
+      // Noting that:
+      //
+      // -1 <= cos(radians(z))             <= 1, so
+      //  0 <= (1 + cos(radians(z)))       <= 2, so
+      //  0 <= (1 + cos(radians(z))) * 180 <= 360
+
+      $value = (1 + cos(old_rad(z))) * 180;
+
+      if(fmod($count, 2) != 0)
+      {
+         $value = $value + 360;
+      }
+
+      set_color($value);
+   }
+}
+

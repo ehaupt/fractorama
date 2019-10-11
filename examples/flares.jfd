@@ -1,0 +1,110 @@
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-3.02633950387979580000,
+       -1.86252684208658730000,
+       -0.11860513070914402000,
+       1.86425335876486350000) => (357*17, 457*17)
+   }
+
+   formula
+   {
+      z = csc(current);
+
+      $v1tot = 0;
+      $v1min = 0;
+      $v1max = 0;
+      $v2tot = 0;
+      $v2min = 0;
+      $v2max = 0;
+      $v3tot = 0;
+      $v3min = 0;
+      $v3max = 0;
+      $v4tot = 0;
+      $v4min = 0;
+      $v4max = 0;
+
+      while($count < 25)
+      {
+         f_z  = log(sin(z));
+         fp_z = cot(z);
+
+         zold = z;
+         z    = z - fp_z / f_z;
+
+         $v1 = mag(tan(z));
+
+         $v1tot += $v1;
+         $v1min = ($count == 0 ? $v1 : min($v1, $v1min));
+         $v1max = ($count == 0 ? $v1 : max($v1, $v1max));
+
+         $v2 = mag(tan(z)^2);
+
+         $v2tot += $v2;
+         $v2min = ($count == 0 ? $v2 : min($v2, $v2min));
+         $v2max = ($count == 0 ? $v2 : max($v2, $v2max));
+
+         $v3 = mag(tan(z)^3);
+
+         $v3tot += $v3;
+         $v3min = ($count == 0 ? $v3 : min($v3, $v3min));
+         $v3max = ($count == 0 ? $v3 : max($v3, $v3max));
+
+         v = csc(z);
+         $v4 = abs(real(v));
+
+         $v4tot += $v4;
+         $v4min = ($count == 0 ? $v4 : min($v4, $v4min));
+         $v4max = ($count == 0 ? $v4 : max($v4, $v4max));
+
+         if(ssq(z - zold) < 1e-4) { break; }
+      }
+
+      $r = $g = $b = 0;
+
+      $v1 = ($v1tot / $count - $v1min) / ($v1max - $v1min);   
+      $v2 = ($v2tot / $count - $v2min) / ($v2max - $v2min);   
+      $v3 = ($v3tot / $count - $v3min) / ($v3max - $v3min);
+      $v4 = ($v4tot / $count - $v4min) / ($v4max - $v4min);   
+
+
+      $r = abs(real(v));
+      $i = abs(imag(v));
+      $va = min($r, $i) / max($r, $i);
+
+      $f1 = .8;
+      $f2 = 1 - $f1;
+
+      $v1 = $v4 ^ ($f1 * $v1 + $f2 * $va);
+      $v2 = $v4 ^ ($f1 * $v2 + $f2 * $va);
+      $v3 = $v4 ^ ($f1 * $v3 + $f2 * $va);
+
+      $r = get_sin_color($v1, 255, 1);
+      $g = get_sin_color($v2, 255, 1);
+      $b = get_sin_color($v3, 255, 1);
+
+      set_color($b, $g, $r);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

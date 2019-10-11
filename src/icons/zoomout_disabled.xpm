@@ -1,0 +1,28 @@
+/* XPM */
+static const char *_zoomout_disabled[] = {
+/* width height num_colors chars_per_pixel */
+"    17    17        4            1",
+/* colors */
+". c None",
+"# c #cccccc",
+"a c #999999",
+"b c #666666",
+/* pixels */
+"...bbbb..........",
+".bb####bb........",
+".b######b........",
+"b########b.......",
+"b#bbbbbb#b.......",
+"b#bbbbbb#b.......",
+"b########b.......",
+".b######b........",
+".bb####bbbb......",
+"...bbbb.baab.....",
+"........b#aab....",
+".........b#aab...",
+"..........b#aab..",
+"...........b#aab.",
+"............b#aab",
+".............b#ab",
+"..............bb."
+};

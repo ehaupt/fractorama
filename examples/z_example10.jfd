@@ -1,0 +1,95 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal
+{
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.36529171231731810000,
+       -1.35829174663097780000,
+       1.36688223497314440000,
+       1.36552799943323570000) => (1280,960)
+   }
+
+   // Set up our colors, here we use three sections - the first a series
+   // of yellow shades, the second a series of red shades and the
+   // last a series of purple/blue shades
+
+   colors
+   {
+      define(0)
+      {
+         gradient(361)
+         {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+         }
+      }
+      define(360)
+      {
+         gradient(361)
+         {
+            [255 204 204]
+            [51 0 0]
+            [255 204 204]
+         }
+      }
+      define(720)
+      {
+         gradient(361)
+         {
+            [204 204 255]
+            [0 0 51]
+            [204 204 255]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula
+   {
+      z = current;
+      c = [0, 0];
+ 
+      // Note the use of the unusual stopping condition, we are only allowed
+      // to continue looping of the cos of real(z) and the cos of imaginary(z)
+      // are both > .2, it is this condition that accounts for this fractal's
+      // interesting rose-like appearance
+
+      while(cos(real(z))      > .2 && 
+            cos(imaginary(z)) > .2 &&
+            $count      < 10      &&
+            magnitude(z) < 20)
+      {
+         z = z * z * z + c;
+         c = sqrt(z);
+      }
+
+      // We select between the 3 sets of colors by:
+      //
+      // fmod($count, 3) * 360 = 0   (if $count is evenly divisible by 3)
+      // fmod($count, 3) * 360 = 360 (if there was a remainder of 1 when
+      //                              $count was divided by 3)
+      // fmod($count, 3) * 360 = 720 (if there was a remainder of 2 when
+      //                              $count was divided by 3)
+      //
+      // The way we select the specific color within the set is by:
+      //
+      // fmod(degrees(z), 90) * 4
+      //
+      // fmod(degrees(z), 90) will produce a value between 0 and 90 so we
+      // multiply by 4 to generate a value that will span all 360 entries
+      // within our chosen color section.
+
+      set_color(
+         fmod($count, 3) * 360 + fmod(old_deg(z), 90) * 4
+      );
+   }
+}

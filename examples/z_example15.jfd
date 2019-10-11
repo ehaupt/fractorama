@@ -1,0 +1,59 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2, -2, 2, 2) => (1280,960)
+   }
+
+   // Set up our colors - a smooth gradient:
+   //  blue => white => yellow => white => red => white => blue
+
+   colors {
+      define {
+         gradient(361) {
+            [204 153 0]
+            [255 255 255]
+            [153 51 51]
+            [255 255 255]
+            [0 51 102]
+            [255 255 255]
+            [204 153 0]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      c = current;
+      z = [0, 0];
+
+      // This is basically another mandelbrot fractal, the unusual bail out
+      // condition accounts for its interesting appearance.  The
+      // portion of the condition:
+      // pow(sin(real(z)), 2) <= pow(cos(imaginary(z)), 3)
+      // says to continue looping as long as the sin(real(z)) squared is
+      // less than or equal to cos(imaginary(z)) cubed
+
+      while(
+         $count < 20 &&
+         pow(sin(real(z)), 2) <= pow(cos(imaginary(z)), 3)
+      )
+      {
+         z = z*z + c;
+      }
+
+      // Assign our color based upon the angle 'z' made with the origin
+      // when the loop was exited
+
+      set_color(old_deg(z));
+   }
+}

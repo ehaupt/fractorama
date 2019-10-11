@@ -1,0 +1,203 @@
+<HTML>
+ <HEAD><TITLE>getting_started.html</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Getting Started</H2>
+  <HR>
+  <P>
+We'll start by generating a simple (but relatively nice looking) image
+right away.
+  <P>
+  <OL>
+   <LI>First, create a new Fract-O-Rama window by choosing:
+   <P>
+   <B>File</B> => <B>New</B>
+   <P>
+   <LI>Now, using your mouse, highlight the text below starting with
+       the line that begins with <B>fractal</B> down to and including
+       the last line that begins with <B>}</B>.  If you are on
+       windows, press Control-C after highlighting the text to store
+       it into your clipboard.
+   <P>
+   <LI>Now click your mouse in the top half of the new Fract-O-Rama window
+       (the area where the cursor is blinking).  If you are on windows
+       you'll need to press Control-V to paste the text.
+   <P>
+   <LI>Now press the 'draw' icon <IMG SRC="drawbutton.png"> - you should
+       see the image below
+   </OL>
+<PRE>
+fractal
+{
+   mapping
+   {
+      (-2, -2, 2, 2) => (200, 200)
+   }
+
+   formula
+   {
+      z         = [0, 0];
+      $maxCount = 20;
+      $maxSSQ   = 4;
+
+      while($count &lt; $maxCount)
+      {
+         $dist = ssq(z);
+
+         if($dist &gt; $maxSSQ)
+         {
+            break;
+         }
+
+         $ratio = $dist / $maxSSQ;
+         z      = z ^ 2 + current;
+      }
+
+      $r = get_sin_color($ratio, 255, 1);
+      $g = get_sin_color($ratio, 205, 1);
+      $b = get_sin_color($ratio, 155, 1);
+
+      set_color($r, $g, $b);
+   }
+}
+</PRE>
+<P>
+<IMG SRC="start1.png">
+<P>
+Now we'll zoom in on an area of the fractal, using your left mouse button
+click, drag and release on the image to select an area you'd like to zoom
+in on.  Once you have released the mouse the image area will look
+something like this
+<P>
+<IMG SRC="zoomin.png">
+<P>
+Now click the "Zoom In" button <IMG SRC="zoominbutton.png">
+<P>
+A new window will open and the zoomed in area will be drawn, it will
+look something like this:
+<P>
+<IMG SRC="start2.png">
+<P>
+You can close the zoom window if you wish, we're now going to go through
+the formula file we used step by step and explain how it works.
+<P>
+The overall structure of the formula file is described
+<A HREF="fractal.html">here</A>, here we'll just work through the
+<B>formula</B> section and explain what it does.
+<P>
+<PRE>
+   formula
+   {
+      z         = [0, 0];
+      $maxCount = 20;
+      $maxSSQ   = 4;
+</PRE>
+<P>
+Here we initialize some variables.  One complex variable (z) and two
+double variables ($maxCount and $maxSSQ).  You can find more information
+about variables and assignments <A HREF="statements.html">here</A> but
+for now:
+<P>
+<TABLE BORDER=1>
+ <TR>
+  <TH>Variable Name</TH>
+  <TH>Value</TH>
+  <TH>Explanation</TH>
+ </TR>
+ <TR>
+  <TD>z</TD>
+  <TD>[0, 0]</TD>
+  <TD>Initialize 'z' to the origin [0, 0]</TD>
+ </TR>
+ <TR>
+  <TD>$maxCount</TD>
+  <TD>20</TD>
+  <TD>Tells the maximum number of times the 'while' loop below
+      is allowed to execute</TD>
+ </TR>
+ <TR>
+  <TD>$maxSSQ</TD>
+  <TD>4</TD>
+  <TD>Tells how far 'z' is allowed to get away from the origin before
+      we'll stop executing the while loop below</TD>
+ </TR>
+</TABLE>
+<PRE>
+      while($count &lt; $maxCount)
+      {
+         // ...
+      }
+</PRE>
+<P>
+This portion says: "Execute all the statements inside the '{' '}' so long
+as the condition: ($count &lt; $maxCount) is true".  The variable
+<B>$count</B> is an automatic variable - the number of times the while
+loop has been executed, Fract-O-Rama keeps track of this value for you
+and makes sure it always has the correct value.
+<P>
+Our condition then says: "Do these statements $maxCount
+(in our case 20) times"
+<PRE>
+      {
+         $dist = ssq(z);
+
+         if($dist &gt; $maxSSQ)
+         {
+            break;
+         }
+</PRE>
+In this section, we set the value '$dist' to be ssq(z).  Basically
+what we're doing is measuring how far 'z' is from the origin and
+storing that distance in '$dist'.  You can find more information about
+ssq <A HREF="complex_attributes.html">here</A>
+<P>
+The next part:
+<PRE>
+         if($dist &gt; $maxSSQ)
+         {
+            break;
+         }
+</PRE>
+Says "If the distance between the origin and 'z' is larger than $maxSSQ
+(in our case 4) break out of the loop".  Breaking out of the loop means
+that no more statements inside the loop will be executed, control
+jumps to the next statement after the while loop.
+<PRE>
+         $ratio = $dist / $maxSSQ;
+         z      = z ^ 2 + current;
+      }
+</PRE>
+This last portion of the while loop does two things:
+<UL>
+ <LI>Assigns the variable '$ratio' to be $dist / $maxSSQ.  Note that
+     we know that $dist will be less than or equal to $maxSSQ
+     because we got beyond the if test above.  As a result, the
+     value stored in $dist will always be between 0 and 1
+ <LI>Assign: z = z ^ 2 + current.  This formula is the famous
+     mandelbrot set, the first fractal ever discovered.
+</UL>
+<PRE>
+      $r = get_sin_color($ratio, 255, 1);
+      $g = get_sin_color($ratio, 205, 1);
+      $b = get_sin_color($ratio, 155, 1);
+
+      set_color($r, $g, $b);
+   }
+</PRE>
+Here we set we're ultimately trying to assign a color value.  When
+we call 'set_color' we're saying: "This is the color that I want
+to use to color the current pixel".  In our case we generate three
+color values ($r, $g and $b) and use those values to specify our
+pixel color.
+<P>
+Our $r, $g and $b values are generated by the call to 'get_sin_color'.
+The 'get_sin_color" function will return back a value between 0 and
+255 that we can use when calling set_color.  For more information
+about 'get_sin_color' you may look
+<A HREF="coloring_techniques.html">here</A>
+<P>
+By far the best way to become adept at using this program is to study
+and experiment upon some of the (more than 300!) example formula files
+provided as part of the Fract-O-Rama distribution.
+ </BODY>
+</HTML>

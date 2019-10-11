@@ -1,0 +1,183 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-4.00000000000000000000,
+       -4.00000000000000000000,
+       4.00000000000000000000,
+       4.00000000000000000000) => (959,960)
+   }
+
+
+   formula
+   {
+
+      /***********************************************************************
+       * The maclaurin series expansion for sin(z ^ 2) is:
+       *
+       * inf
+       * +--
+       *  \
+       *  /   (-1 ^ n) * z ^ (4 * n + 2) / (2 * n + 1)!
+       * +--
+       * n = 0
+       ***********************************************************************/
+
+      zvalue = sin(current ^ 2);
+
+      $xavg = 0;    
+      $yavg = 0;    
+      $mavg = 0;    
+
+      $xmax = 0;    
+      $ymax = 0;    
+      $mmax = 0;    
+
+      $xtot = 0;    
+      $ytot = 0;    
+      $mtot = 0;    
+     
+      zSum           = 0;
+      $maxIterations = 15;
+      $tolerance     = 1e-6;
+
+      // Loop until we've been through the loop '$maxIterations' times
+      // or we deem that zSum is close enough to zvalue
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         $factor = 1;
+
+         if($count % 2 == 1) { $factor = -1; }
+
+         $denominator = fact(2 * $count + 1);
+
+         zSum += $factor * current ^ (4 * $count + 2) / $denominator;
+
+         // Use coth for even iteration, tanh for odd iterations
+
+         if($count % 2 == 0) { value = coth(zSum); }
+         else                { value = tanh(zSum); }
+
+         $x = mag(value ^ 2);
+         $y = mag(value ^ 4);
+         $m = mag(value ^ 6);
+
+         $xavg = ($x + $xavg * $count) / ($count + 1);
+         $yavg = ($y + $yavg * $count) / ($count + 1);
+         $mavg = ($m + $mavg * $count) / ($count + 1);
+
+         $xdev = sqrt(($x - $xavg) * ($x - $xavg));
+         $ydev = sqrt(($y - $yavg) * ($y - $yavg));
+         $mdev = sqrt(($m - $mavg) * ($m - $mavg));
+
+         $xmax = max($xmax, $xdev);
+         $ymax = max($ymax, $ydev);
+         $mmax = max($mmax, $mdev);
+
+         $xtot += $xdev;
+         $ytot += $ydev;
+         $mtot += $mdev;
+      }
+
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot/$count) / $xmax;
+         $g = ($ytot/$count) / $ymax;
+         $b = ($mtot/$count) / $mmax;
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

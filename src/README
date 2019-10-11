@@ -1,0 +1,43 @@
+Compiling
+---------
+
+   I build with:
+
+      unix: g++ 3.2.2
+      win : vc++ 6
+
+   I use Gnu Make to build on both platforms (so you'll need it
+   if you want to build this program).
+
+   I've build most recently with qt 3.1.2 on both windows/linux
+
+   You should not have to change the Makefile at all, but you will
+   likely need to edit 'directories.inc'.  If you are on unix,
+   you'll need to set UNIX_QTROOT as in:
+
+      UNIX_QTROOT := /tools/qt-3.1.2
+
+   (under your UNIX_QTROOT, you should find directories:
+    bin, include, lib, etc.)
+
+   On windows, you'll need to set WINDOWS_QTROOT and
+   WINDOWS_VC_INCLUDE as in:
+
+      WINDOWS_QTROOT     := c:/qt3.1.2
+      WINDOWS_VC_INCLUDE := g:/vs/vc98/include
+
+   (just like UNIX_QTROOT, under your WINDOWS_QTROOT you should find
+    directories: bin, include, lib, etc.  in your WINDOWS_VC_INCLUDE
+    directory, you'll find (for example) stdio.h)
+
+   Once you have edited the contents of directories.inc, type 'make' (to
+   build a debug version) or 'make release' to build a release version
+
+Docs/Examples
+-------------
+   There are html help files in the 'doc' directory where you'll find
+a description of the formula file, list of available functions, coloring
+techniques, etc.
+
+   Under the examples subdirectory you will find many example fractal formula
+files, a number of interesting ideas and techniques are demonstrated.

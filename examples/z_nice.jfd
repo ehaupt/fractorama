@@ -1,0 +1,84 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.55697107800175293946,
+       -1.91576749999999962348,
+       -1.07549167397020162262,
+       1.90195000000000025153) => (372,960)
+   }
+
+   formula {
+
+      z     = [0, 0];
+      $stop = 0;
+      $xmin = 0; $xmax = 0; $xtot = 0;
+      $ymin = 0; $ymax = 0; $ytot = 0;
+      $mmin = 0; $mmax = 0; $mtot = 0;
+
+      $cValue = 1;
+      $rValue = $cValue * .99;
+      p1      = [-$rValue, -$rValue];
+      p2      = [$rValue,  $rValue];
+
+      while($count < 50 && ssq(z) < 16 && $stop == 0)
+      { 
+         z = sec(z) + current;
+
+         $x = real(z);
+         $y = imag(z);
+         $m = mag(z);
+
+         $xtot += $x; $ytot += $y; $mtot += $m;
+         $xmin = min($xmin, $x); $ymin = min($ymin, $y); $mmin = min($mmin, $m);
+         $xmax = max($xmax, $x); $ymax = max($ymax, $y); $mmax = max($mmax, $m);
+
+         if($count > 1 &&
+            inside(
+               sec(z),
+               r_and(
+                  r_not(r_circle([0, 0], $cValue)),
+                  r_rect(p1, p2)
+               )
+            )
+         )
+         {
+            $stop = 1; 
+         }        
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);
+         $g = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+         $b = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($g, $r, $b);
+   }
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.48719999999999985540,
+       -0.37602597402597404130,
+       -0.91209999999999991083,
+       0.38033766233766236331) => (727,960)
+   }
+
+   formula {
+
+      a = current;
+      b = current;
+      c = current;
+
+      $xmin = 0; $xmax = 0; $xtot = 0;
+      $ymin = 0; $ymax = 0; $ytot = 0;
+      $mmin = 0; $mmax = 0; $mtot = 0;
+
+      while($count < 20 && ssq(a) < 1e2 && ssq(b) < 1e2 && ssq(c) < 1e2)
+      {
+         a = sec(a) + current;
+         b = csc(b) + current;
+         c = cot(c) + current;
+
+         v = a * b * c;
+         v = log(v);
+
+         $x = real(v);
+         $y = imag(v);
+         $m = mag(v);
+
+         $xmin = min($xmin, $x);
+         $ymin = min($ymin, $y);
+         $mmin = min($mmin, $m);
+
+         $xmax = max($xmax, $x);
+         $ymax = max($ymax, $y);
+         $mmax = max($mmax, $m);
+
+         $xtot += $x; $ytot += $y; $mtot += $m;
+      }
+
+      $r = 255;
+      $g = 255;
+      $b = 255;
+
+      if($count > 0)
+      {
+         $r = ($xtot / $count - $xmin) / ($xmax - $xmin);
+         $g = ($ytot / $count - $ymin) / ($ymax - $ymin);
+         $b = ($mtot / $count - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+

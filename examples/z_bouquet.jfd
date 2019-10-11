@@ -1,0 +1,66 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (4.54840779691939900431,
+       0.01565699999999963649,
+       5.12227721215044340397,
+       0.97941449999999963261) => (571,960)
+   }
+
+   formula {
+
+      z = [0, 0];
+
+      $yt = 0; $yn = 0; $ym = 0;
+      $xt = 0; $xn = 0; $xm = 0;
+      $mt = 0; $mn = 0; $mm = 0;
+
+      while($count < 10 && ssq(z) < 10) 
+      {
+         z = log(z + current) ^ sec(z);
+        
+         value = log(z);
+         $x    = real(value);
+         $y    = imag(value);
+         $m    = mag(value);
+
+         $xt += $x; $yt += $y; $mt += $m;
+         $xm = max($xm, $x); $ym = max($ym, $y); $mm = max($mm, $m);
+         $xn = min($xn, $x); $yn = min($yn, $y); $mn = min($mn, $m);
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($xt / $count) - $xn) / ($xm - $xn);
+         $g = (($yt / $count) - $yn) / ($ym - $yn);
+         $b = (($mt / $count) - $mn) / ($mm - $mn);
+
+         $r = get_sin_color($r, 255, 1); 
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+
+   }
+}
+
+
+
+
+
+
+
+

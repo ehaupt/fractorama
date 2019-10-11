@@ -1,0 +1,105 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.71270336428998470000,
+       -1.46286599392348250000,
+       1.62868312810446980000,
+       1.46237912326401750000) => (1280,960)
+   }
+
+    // Here we use three color sections, the first is a set of cyan values,
+    // the second a set of green values and the last is a set of yellow
+    // values
+
+    colors {
+      define(0){
+         gradient(361) {
+            [204 255 255]
+            [0 51 51]
+            [204 255 255]
+         }
+      }
+      define(360){
+         gradient(361) {
+            [204 255 204]
+            [0 51 0]
+            [204 255 204]
+         }
+      }
+      define(720){
+         gradient(361) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      z = current;
+      c = [1, 0];
+
+      // While the formula used is pretty ordinary, this fractal's
+      // interesting appearance is the result of the unusual bail-out
+      // condition.  fmod(anything, 2) results in a value that is
+      // between 0 and 2, we exit the loop unless that resulting
+      // value is less than 1.5.
+
+      while(
+         fmod(sqrt(abs(real(z)*imaginary(z))), 2) < 1.5 &&
+         $count < 4                            &&
+         magnitude(z) < 20
+      )
+      {
+         z = z*z*z + c;
+         c = sqrt(z) * sin(z);
+      }
+
+      // Even values of $count result in: fmod($count, 2) * 360 = 0
+      // (so we select the magenta set of colors) while odd values of
+      // $count result in: fmod($count, 2) * 360 - 360 (so we select
+      // the yellow set of colors).  Also, -1 <= sin(radians(z)) <= 1
+      // so 0 <= abs(sin(radians(z))) <= 1 so we multiply that result
+      // by 360 to span all 360 entries within our selected section
+
+      // $count will be the number of times the while loop above was
+      // executed, so we'll end up with:
+      //
+      // fmod($count, 3) * 360 => 0   (if $count was divisible by 3)
+      // fmod($count, 3) * 360 => 360 (if there was a remainder of
+      //                               1 when we divided $count by 3)
+      // fmod($count, 3) * 360 => 720 (if there was a remainder of
+      //                               2 when we divided $count by 3)
+      //
+      // Starting from 0, 360 or 720 selects the set of colors and the
+      // color within the set is chosen by:
+      //
+      // abs(sin(radians(z))) * 360;
+      //
+      // since -1 <= sin(anything) <= 1, then
+      // 0 <= abs(sin(anything)) <= 1, and
+      // 0 <= abs(sin(anything)) * 360 <= 360
+
+      set_color(fmod($count, 3) * 360 + abs(sin(old_rad(z))) * 360);
+   }
+}
+
+
+
+
+
+
+
+
+

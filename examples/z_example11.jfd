@@ -1,0 +1,72 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.83732949451059600000,
+       -1.12034202083853280000,
+       -2.83053306515265570000,
+       -1.11326636163865530000) => (1280,960)
+   }
+
+   // Initialize our color table, here we have two color ranges - the
+   // first a series of cyan colors, the second a series of yellow colors
+
+   colors {
+      define(0){
+         gradient(361) {
+            [204 255 255]
+            [0 102 102]
+            [204 255 255]
+         }
+      }
+
+      define(360){
+         gradient(361) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      z1 = [0, 0];
+      z2 = [0, 0];
+
+      c1 = current;
+      c2 = current;
+
+      while($count < 100 && magnitude(z1) < 2 && magnitude(z2) < 2)
+      {
+         z1 = sin(z2 + c2);
+         z2 = cos(z1 + c1);
+      }
+ 
+     // To select our color index, we perform:
+     //
+     // $value = abs(cos(radians(z1) + radians(z2))) * 360
+     //
+     // To select between our two color tables, we determine if
+     // $count is odd (if(fmod($count, 2) != 0)) and if so, we add
+     // 360 to $value
+
+     $value = abs(cos(old_rad(z1) + old_rad(z2))) * 360;
+
+     if(fmod($count, 2) != 0)
+     {
+        $value = $value + 360;
+     }
+
+     set_color($value);
+   }
+}

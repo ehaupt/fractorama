@@ -1,0 +1,57 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish our region of interest
+
+   mapping {
+      (-2.18356788079470209851,
+       -1.92500000000000004441,
+       2.21254139072847699765,
+       1.92361111111111093841) => (1280,960)
+   }
+
+    colors {
+      define(0){
+         gradient(361) {
+            [204 204 255]
+            [51 0 51]
+            [204 204 255]
+         }
+      }
+      define(360){
+         gradient(361) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+         }
+      }
+   }
+
+   /* -- Now define our variables and equation -- */
+
+   formula {
+      z = current;
+      c = [1, 0];
+
+      while(
+         fmod(sqrt(abs(real(z)*imag(z))), 10) < 2 &&
+         $count < 10                                 &&
+         mag(z) < 20
+      )
+      {
+         z = z*z*z + c;
+      }
+
+      set_color( fmod($count, 2) * 360 + 
+               abs(sin(old_rad(z))) * 360);
+   }
+}
+
+
+
+

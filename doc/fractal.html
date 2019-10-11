@@ -1,0 +1,98 @@
+<HTML>
+ <HEAD><TITLE>Mapping</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Fractal Formula File</H2>
+  <HR>
+  <P>
+  The fractal formula file has a structure like this:
+  <P>
+  <PRE>
+   fractal
+   {
+      <A HREF="mapping.html">mapping</A> {
+         ...
+      }
+
+      <A HREF="colors.html">colors</A> {
+         ...
+      }
+
+      <A HREF="formula.html">formula</A> {
+         ...
+      }
+   }
+   </PRE>
+   <P>
+   The details of each section can be found by following the appropriate link,
+this document will focus on the high-level characteristics of the formula
+file.
+   <P>
+   Here are some overall notes:
+   <P>
+   <UL>
+    <LI>The formula file must begin with the <B>fractal</B> keyword which is
+        followed by the sections enclosed within '{' and '}'.
+      
+    <P>
+    <LI>All keywords in the fractal formula file are case sensitive.  This
+        means that:
+        <P>
+        <UL>
+         <LI>fractal
+         <LI><A HREF="mapping.html">mapping</A>
+         <LI><A HREF="colors.html">colors</A>
+         <LI><A HREF="formula.html">formula</A>
+        </UL>
+        <P>
+        will be recognized but:
+        <P>
+        <UL>
+         <LI>FRACTAL
+         <LI>Mapping
+         <LI>CoLoRs
+         <LI>forMULA
+        </UL>
+        <P>
+        will not be
+    <P>
+    <LI>The sections must appear in the order shown above, but not all
+        the sections are required.  Here is a summary:
+    <P>
+     <TABLE BORDER=1>
+      <TR><TH>Section Name</TH><TH>Required?</TH><TR>
+      <TR><TD><A HREF="mapping.html">mapping</A></TD><TD>yes</TD></TR>
+      <TR><TD><A HREF="colors.html">colors</A></TD><TD>no</TD></TR>
+      <TR><TD><A HREF="formula.html">formula</A></TD><TD>yes</TD></TR>
+     </TABLE>
+    <P>
+    <LI>Whitespace is ignored, you could write your formula file all on
+        one single line if you wanted to.
+    <P>
+    <LI>The formula file allows you to place comments inside the file,
+        three styles of comments are supported:
+    <P>
+     <UL>
+      <LI>C style comments, where everything between /* and */ is treated
+          as a comment
+      <P>
+      <LI>C++ style comments, where everything between // and the end of the
+          line is treated as a comment
+      <P>
+      <LI>Script style comments, where everything between # and the end of the
+          line is treated as a comment
+     </UL>
+    <P>
+    Here are some examples of the three comment styles
+    <P>
+<PRE>
+     /* -- This is a C style comment,
+           note that it can span multiple lines -- */
+
+     // This c++ style comment ends at the end of this line
+
+     # So does this script style comment
+</PRE>
+   </UL>
+ </BODY>
+</HTML>

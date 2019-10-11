@@ -1,0 +1,28 @@
+/* XPM */
+static const char *_stop[] = {
+/* width height num_colors chars_per_pixel */
+"    17    17        4            1",
+/* colors */
+". c None",
+"# c #ff0000",
+"a c #ffffff",
+"b c #000000",
+/* pixels */
+".....bbbbbbb.....",
+"....b#######b....",
+"...b#########b...",
+"..b###########b..",
+".b#aaabb###aaabb.",
+"b###aaabb#aaabb#b",
+"b####aaabaaabb##b",
+"b#####aaaaabb###b",
+"b######aaabb####b",
+"b#####aaaaabb###b",
+"b####aaabaaabb##b",
+"b###aaabb#aaabb#b",
+".b#aaabb###aaabb.",
+"..b#bbb#####bbb..",
+"...b#########b...",
+"....b#######b....",
+".....bbbbbbb....."
+};

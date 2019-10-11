@@ -1,0 +1,62 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal
+{
+   mapping {
+      (-0.24375434888233483000,
+       -1.32491777504082300000,
+       2.05006192061993580000,
+       1.31746643184571430000) => (1228,960)
+   }
+   
+   formula 
+   {
+      z = [0, 0];
+      c = current;
+
+      while($count < 100 && ssq(z) < 4)
+      {
+         if(fmod($count, 3) == 0)
+         {
+            z  = log(c) + cos(z);
+            c  = sqrt(z);
+         }
+         else
+         {
+            if(fmod($count, 3) == 1)
+            {        
+               c  = log(z) + cos(c);
+               z  = sqrt(c);
+            }
+            else
+            {
+               c = log(c) + sin(z);
+               z = sqrt(c);
+            }
+         }         
+      }      
+
+      $value1 = rad(z - c);
+      $value2 = rad(z + c);
+      $value3 = rad(z * c);
+
+      $red   = 255 * (1 - abs(sin($value1)));
+      $green = 255 * (1 - abs(sin($value2)));
+      $blue  = 255 * abs(sin($value3));
+                                      
+      set_color($red, $green, $blue);   
+   }
+}
+
+
+
+
+
+
+
+
+

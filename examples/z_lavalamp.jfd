@@ -1,0 +1,196 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (82.14484819699745800000,
+       -0.22697742153918954000,
+       82.73650193297262900000,
+       0.34656115507429730000) => (995,960)
+   }
+
+
+
+
+
+
+
+
+
+
+   formula
+   {
+      z              = current;
+      $maxIterations = 10;
+
+      $stop          = 0;
+      $xmin          = 0;
+      $xmax          = 0;
+      $xtot          = 0;
+      $ymin          = 0;
+      $ymax          = 0;
+      $ytot          = 0;
+      $mmin          = 0;
+      $mmax          = 0;
+      $mtot          = 0;
+
+      $flag1 = 0;
+      $flag2 = 0;
+      $flag3 = 0;
+      $value = .8;
+      $diff  = 0;
+
+      while($stop == 0 && $count < $maxIterations)
+      {
+         z = sec(z) + csc(z);
+
+         $zx = real(z);
+         $zy = imag(z);
+         $m  = mag(z);
+
+         $xtot = $xtot + $zx;
+         $xmin = min($xmin, $zx);
+         $xmax = max($xmax, $zx);
+
+         $ytot = $ytot + $zy;
+         $ymin = min($ymin, $zy);
+         $ymax = max($ymax, $zy);
+
+         $mtot = $mtot + $m;
+         $mmin = min($mmin, $m);
+         $mmax = max($mmax, $m);
+
+         $xmod = fmod($zx, 1);
+         $ymod = fmod($zy, 1);
+
+        
+         $diff = mag(z - [1, 0]);
+
+         if($diff < $value)
+         {
+            $flag1 = 1;
+            $stop  = 1;
+         }
+         else
+         {
+            $diff = mag(z - [0, 1]);
+
+            if($diff < $value)
+            {
+               $flag2 = 1;
+               $stop  = 1;
+            }
+            else
+            {
+               $diff = mag(z - [1, 1]);
+
+               if($diff < $value)
+               {
+                  $flag3 = 1;
+                  $stop  = 1;
+               }
+            }
+         }
+
+
+
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($stop == 1)
+      {
+
+
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);     
+         $g = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+         $b = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+
+
+    
+       
+         // some constants ...
+   
+         $pi    = 3.14159265358979323846;
+         $twopi = 2 * $pi;
+   
+         // adjust these to taste ... they should be: 0 <= value <= 255  
+         
+         $rStart = 255;
+         $gStart = 255;
+         $bStart = 255;
+
+         if($flag1 == 1) { $rStart = $rStart * $diff / $value; }
+         if($flag2 == 1) { $gStart = $gStart * $diff / $value; }
+         if($flag3 == 1) { $bStart = $bStart * $diff / $value; }
+    
+         // adjust these to taste ... they should be: 0 <= value <= 2
+   
+         $rStep = 1;
+         $gStep = 1;
+         $bStep = 1;
+   
+         // Calculate the colors ...
+   
+         $r = -cos($twopi * $r);
+         $g = -cos($twopi * $g);
+         $b = -cos($twopi * $b);
+   
+         $r = $r * 127 + 127;
+         $g = $g * 127 + 127;
+         $b = $b * 127 + 127;
+   
+         $r = $r * $rStep + $rStart;
+         $g = $g * $gStep + $gStart;
+         $b = $b * $bStep + $bStart;
+   
+         $r = $r / 360;
+         $g = $g / 360;
+         $b = $b / 360;
+   
+         $r = sin($pi * $r);
+         $g = sin($pi * $g);
+         $b = sin($pi * $b);
+   
+         $r = $r * 128 + 127;
+         $g = $g * 128 + 127;
+         $b = $b * 128 + 127;
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,126 @@
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.15419309596535913000,
+       -0.25933687115084736000,
+       0.82249575081012805000,
+       0.26030184367011938000) => (457*16, 357*16)
+   }
+
+   formula
+   {
+      $maxIterations = 10;
+
+      $v1tot = 0;
+      $v1min = 0;
+      $v1max = 0;
+      $v2tot = 0;
+      $v2min = 0;
+      $v2max = 0;
+      $v3tot = 0;
+      $v3min = 0;
+      $v3max = 0;
+      $v4tot = 0;
+      $v4min = 0;
+      $v4max = 0;
+
+      z = log(current);
+      $n      = 0;
+      $gValue = 1;
+
+      while($count < $maxIterations && $n < 1)
+      {
+         z = cosh(z ^ z) + current;
+
+         v   = sqrt(z);
+         $v1 = mag(sec(v));
+
+         $v1tot += $v1;
+         $v1min = ($count == 0 ? $v1 : min($v1, $v1min));
+         $v1max = ($count == 0 ? $v1 : max($v1, $v1max));
+
+         $v2 = mag(csc(v));
+
+         $v2tot += $v2;
+         $v2min = ($count == 0 ? $v2 : min($v2, $v2min));
+         $v2max = ($count == 0 ? $v2 : max($v2, $v2max));
+
+         $v3 = mag(cot(v));
+
+         $v3tot += $v3;
+         $v3min = ($count == 0 ? $v3 : min($v3, $v3min));
+         $v3max = ($count == 0 ? $v3 : max($v3, $v3max));
+
+         $v4 = min($v1, min($v2, $v3));
+
+         $v4tot += $v4;
+         $v4min = ($count == 0 ? $v4 : min($v4, $v4min));
+         $v4max = ($count == 0 ? $v4 : max($v4, $v4max));
+
+         if($count > 1 && $n == 0)
+         {
+            v  = csc(z);
+            $r = real(v);
+            $i = imag(v);
+
+            $t = .1;
+
+            if(($d = abs(atan($i))) < $t ||
+               ($d = abs(atan($r))) < $t)
+            {
+               $gValue = 1.5 - $d / $t;
+               $n++;
+            }
+         }
+         elseif($n > 0) { $n ++; }         
+
+
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $v1 = ($v1tot / $count - $v1min) / ($v1max - $v1min);   
+         $v2 = ($v2tot / $count - $v2min) / ($v2max - $v2min);   
+         $v3 = ($v3tot / $count - $v3min) / ($v3max - $v3min);   
+         $v4 = ($v4tot / $count - $v4min) / ($v4max - $v4min);
+
+         $va = ($v1 + $v2 + $v3) / 3;
+
+         $f1 = .5;
+         $f2 = 1 - $f1;
+
+         $v1 = $v4 ^ ($f1 * $v1 + $f2 * $va);
+         $v2 = $v4 ^ ($f1 * $v2 + $f2 * $va);
+         $v3 = $v4 ^ ($f1 * $v3 + $f2 * $va);
+
+         $r = get_sin_color($v1, 255, 1);
+         $g = get_sin_color($v2, 255, 1);
+         $b = get_sin_color($v3, 255, 1);
+
+         $r = gamma($r, $gValue);
+         $g = gamma($g, $gValue);
+         $b = gamma($b, $gValue);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

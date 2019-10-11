@@ -1,0 +1,112 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (1.88876609204074520000,
+       0.67864893315937924000,
+       1.89664590028496270000,
+       0.69004896321405973000) => (113, 165)
+   }
+
+
+
+   formula {
+     
+      z = sin(current);
+      zold = [0, 0];
+
+      $v1min = $v2min = $v3min = $v4min = 0;
+      $v1max = $v2max = $v3max = $v4max = 0;
+      $v1tot = $v2tot = $v3tot = $v4tot = 0;
+     
+      $stop = 0;
+      $tolerance = 1e-2;
+     
+      while($stop == 0 && $count < 10)
+      {
+         if(ssq(z - zold) < $tolerance)
+         {
+            $stop = 1;
+         }
+         else
+         {
+            f_z  = sinh(z);
+            fp_z = cosh(z);
+
+            zold = z;
+            z    = z - fp_z / f_z;
+
+            v  = log(z);
+            v1 = sec(v) ^ 2;
+            v2 = asech(v) ^ 3;
+            v3 = sec(v) ^ 4;
+
+            $v1 = abs(real(v1) - imag(v1));
+            $v2 = abs(real(v2) - imag(v2));
+            $v3 = abs(real(v3) - imag(v3));
+
+            $v4 = min($v1, min($v2, $v3));
+
+         $v1min = ($count == 0 ? $v1 : min($v1min, $v1));
+         $v2min = ($count == 0 ? $v2 : min($v2min, $v2));
+         $v3min = ($count == 0 ? $v3 : min($v3min, $v3));
+         $v4min = ($count == 0 ? $v4 : min($v4min, $v4));
+
+         $v1max = ($count == 0 ? $v1 : max($v1max, $v1));
+         $v2max = ($count == 0 ? $v2 : max($v2max, $v2));
+         $v3max = ($count == 0 ? $v3 : max($v3max, $v3));
+         $v4max = ($count == 0 ? $v4 : max($v4max, $v4));
+
+         $v1tot += $v1;
+         $v2tot += $v2;
+         $v3tot += $v3;
+         $v4tot += $v4;    
+
+   
+         }
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+      $v1 = ($v1tot / $count - $v1min) / ($v1max - $v1min);
+      $v2 = ($v2tot / $count - $v2min) / ($v2max - $v2min);
+      $v3 = ($v3tot / $count - $v3min) / ($v3max - $v3min);
+      $v4 = ($v4tot / $count - $v4min) / ($v4max - $v4min);
+
+      $va = ($v1 + $v2 + $v3) / 3;
+
+      $f1 = .5;
+      $f2 = 1 - $f1;
+
+      $v1 = $v4 ^ ($f1 * $v1 + $f2 * $va);
+      $v2 = $v4 ^ ($f1 * $v2 + $f2 * $va);
+      $v3 = $v4 ^ ($f1 * $v3 + $f2 * $va);
+
+      $r = get_sin_color($v1, 255, 1);
+      $g = get_sin_color($v2, 255, 1);
+      $b = get_sin_color($v3, 255, 1);
+      
+        
+      }
+
+      set_color($r, $b, $g);
+   }
+}
+
+
+
+
+
+

@@ -1,0 +1,498 @@
+<HTML>
+ <HEAD><TITLE>Statements</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Statements</H2>
+  <HR>
+  <P>
+<U><H4>color assignment statement</H4></U>
+<P>
+The color assignment statement can take one of three forms:
+<P>
+<UL>
+ <LI>indexed color assignment statement
+ <P>
+ The format of the indexed color assignment statement is:
+ <PRE>
+   set_color(
+      double_expression
+   );
+ </PRE>
+ <P>
+ <LI>rgb color assignment statement
+ The format of the rgb color assignment statement is:
+ <PRE>
+   set_color(
+      double_expression,
+      double_expression,
+      double_expression
+   );
+ </PRE>
+ <P>
+ <LI>hsv color assignment statement
+ The format of the hsv color assignment statement is:
+ <PRE>
+   set_color_hsv(
+      double_expression,
+      double_expression,
+      double_expression
+   );
+ </PRE>
+</UL>
+<P>
+In all cases, "double_expression" is a mathematical expression that
+evaluates to a number.  Note that an expression that evaluates to a
+complex value is not acceptable - a more formal definition of double_expression
+can be found <A HREF="#double_expression">here</A> but for now just
+remember that a double_expression evaluates to a number.  Here is a simple
+example of an indexed color assignment:
+<PRE>
+   set_color(2 * 50);
+</PRE>
+<P>
+This example sets the current pixel to the rgb value associated with color
+table entry 100.  A corresponding example for rgb color assignment would
+be:
+<PRE>
+   set_color(255, 0, 0);
+</PRE>
+<P>
+This example sets the current pixel to red.  Some final notes on the two
+<P>
+Finally, here's what an hsv color assignment would look like:
+<PRE>
+   set_color_hsv(1, 100, 200);
+</PRE>
+Some final notes on the color assignment statements:
+<P>
+
+<UL>
+ <LI>indexed color assignment - the double_expression used should evaluate to
+     a number for which a color table entry has been assigned (for more
+     detail see the documentation for the <A HREF="colors.html">colors</A>
+     section and for <A HREF="coloring_techniques.html">coloring techniques</A>)
+     If the double_expression evalutes to an index for which a color table entry
+     has not been defined, the pixel will be colored black.
+ <P>
+ <LI>rgb color assignment - each of the double_expressions for
+     red, green and blue must evalute to a number &lt;= 0 and &gt;= 255 (again,
+     there is further information in the
+     <A HREF="coloring_techniques.html"> coloring techniques</A> document).
+      If any of the values are out of range, the pixel will be colored black.
+</UL>
+
+<P>
+<A NAME="double_expression">
+<U><H4>double variable assignment statement</H4></U>
+<P>
+The general format of the double assignment statement is as follows:
+<PRE>
+   $variable_name = double_expression;
+</PRE>
+<P>
+This statement assigns the value of 'double_expression'
+to the variable whose name is 'variable_name'.  More precisely, the right
+hand side of this assignment (double_expression) can
+be composed of:
+<P>
+ <UL>
+  <LI>numbers - such as: 3, 1.267, 1e-10
+  <P>
+  <LI>double variable references - such as $a, $b, $c
+  <P>
+  <LI>additional double variable assignments.  This allows us to do things like:
+      <P>
+      $a = $b = $c = 10.0;
+  <P>
+  <LI>extended assignment such as:
+  <P>
+   <TABLE BORDER=1>
+    <TR><TH>Example</TH><TH>Explanation</TH></TR>
+    <TR><TD>$a *= 2;</TD><TD>$a = $a * 2</TD></TR>
+    <TR><TD>$a /= 3;</TD><TD>$a = $a / 3</TD></TR>
+    <TR><TD>$a -= 4;</TD><TD>$a = $a - 4</TD></TR>
+    <TR><TD>$a += 5;</TD><TD>$a = $a + 5</TD></TR>
+    <TR><TD>$a++</TD><TD>$a = $a + 1</TD></TR>
+    <TR><TD>++$a++</TD><TD>$a = $a + 1</TD></TR>
+    <TR><TD>$a--</TD><TD>$a = $a - 1</TD></TR>
+    <TR><TD>--$a++</TD><TD>$a = $a - 1</TD></TR>
+   </TABLE>
+  <P>
+  The difference between '$a++' and '++$a' comes about when those
+  expressions are used as part of a longer assignment statement as
+  in:
+  <P>
+  <PRE>
+  $a = 1;
+  $b = 1;
+  $c = ++$a;
+  $d = $b++;
+  </PRE>
+  <P>
+  In this example, after all the statments are execute both a, b and c will
+  be 2 but d would be 1.  If the "++" or "--" comes after the variable the
+  variable is incremented (or decremented) but the original value is used
+  if this is part of a longer assignment statement
+  <P>
+  <LI>the ternary operator which allows a shorthand
+      if/else construct:
+      <P>
+      $a = 2;<BR>
+      $b = 3;<BR>
+      $c = ($a > $b ? 1 : 2);
+      <P>
+      Which means: "If $a is greater than $b assign $c the value 1 else
+      assign $c the value 2"
+  <P>
+  <LI><A HREF="complex_attributes.html">complex attributes</A>
+      <UL>
+       real, imaginary, magnitude, sum_of_squares, degrees, radians
+      </UL>
+  <P>
+  <LI><A HREF="double_functions.html">double functions</A>
+      <UL>
+      acsc, acsch, acos, acosh, acot, acoth, asec, asech, asin,
+      asinh, atan, atanh, ceil, cos, cosh, cot, coth, csc, csch, exp,
+      abs, fabs, fact, floor, log, log10, sec, sech, sin, sinh,
+      sqrt, tan, tanh, atan2, mod, fmod, pow, min, max, gamma,
+      get_sin_color, map_color
+      </UL>
+ </UL>
+<P>
+Additionally, a double expression can combine any of the items listed
+above using:
+<P>
+ <UL>
+  <LI>- (unary minus)
+  <LI>+, -, *, /
+  <LI> ()
+  <LI> % (a % b is shorthand for mod(a, b))
+  <LI> ^ (a ^ b is shorthand for pow(a, b))
+ </UL>
+<P>
+Here are some examples of double variable assignment statements:
+<P>
+<UL>
+ <LI>$a = 1 + 2 + 3;
+ <LI>$b = real(z) + fmod($c, $d * sin(5));
+ <LI>$c = -$a + pow(min(2, 3), max(3, 4)) * magnitude(z + c);
+</UL>
+<P>
+<A NAME="complex_expression">
+<U><H4>complex variable assignment statement</H4></U>
+<P>
+The format of the complex assignment statement is as follows:
+
+<PRE>
+   variable_name = complex_expression; or
+   variable_name = double_expression;
+</PRE>
+<P>
+Note that 'variable_name' is used, not '$variable_name'.  The '$' is what
+distinguishes a double variable from a complex variable.  The preceding
+statement assigns the value of 'complex_expression' to the complex variable
+whose name is 'variable_name'.  More precisely, the right hand side of
+this assignment (complex_expression) can be composed of:
+<P>
+ <UL>
+  <LI>a double expression (which we discussed above)
+  <P>
+  <LI>complex variable references - such as: z, c, current
+  <P>
+  <LI>complex numbers - such as: [1, 2] or [sin(2), $a + $b].
+      Note that complex numbers have the general form:
+      <PRE>
+      [ double_expression, double_expression ]
+      </PRE>
+      Anything that is a valid double_expression can be used to
+      construct a complex number in this fashion.
+  <P>
+  <LI>additional complex variable assignments (just like doubles)
+      as in:
+  <P>
+  <PRE>
+     a = b = c;
+     z = y = $x;
+  </PRE>
+  <P>
+  <LI>extended assignment (identical to the table/description of
+      double variable extended assignment above)
+  <P>
+  <LI><A HREF="complex_functions.html">complex functions</A>
+      rotate, acos, acosh, acot, acoth, acsc, acsch, asec, asech, asin,
+      asinh, atan, atanh, conj, cos, cosh, cot, coth, csc, csch, exp,
+      log, sec, sech, sin, sinh, sqrt, tan, tanh, pow
+ </UL>
+<P>
+Additionally, a complex expression can combine any of the items listed
+above using:
+<P>
+ <UL>
+  <LI>- (unary minus)
+  <LI>+, -, *, /
+  <LI> ()
+  <LI> ^ (a ^ b is shorthand for pow(a, b))
+ </UL>
+<P>
+Here are some examples of complex variable assignment statements:
+<P>
+<UL>
+ <LI>a = pow(b, c) + [$a, sin(2) / 3];
+ <LI>b = complex(1 + 2 + 3 + 4) * sin(a / c);
+ <LI>c = (a + b) * (c - d) * sqrt(z * [$a, $b]);
+</UL>
+<U><H4>conditional statement</H4></U>
+<P>
+Conditional statements look like this:
+<PRE>
+   if(boolean_expression)
+   {
+      zero or more statements
+   }
+
+   or
+
+   if(boolean_expression)
+   {
+      zero or more statements
+   }
+   elseif(boolean_expression)
+   {
+      zero or more statements
+   }
+
+   or
+
+   if(boolean_expression)
+   {
+      zero or more statements
+   }
+   else
+   {
+      zero or more statements
+   }
+
+   or
+
+   if(boolean_expression)
+   {
+      zero or more statements
+   }
+   elseif(boolean_expression)
+   {
+      zero or more statements
+   }
+   elseif(boolean_expression)
+   {
+      zero or more statements
+   }
+   else
+   {
+      zero or more statements
+   }
+</PRE>
+<P>
+If 'boolean_expression' evaluates to a non-zero value, the statements
+inside that '{' '}' block are executed.  If none of the boolean
+expressions evaluates to true (and if there is an 'else' portion) the
+statements inside the 'else' portion are executed.  For a more precise
+definition of <B>boolean_expression</B> see the discussion in the
+next section.
+<P>
+It is important to note that <B>statements</B> here has the exact same
+meaning as is did <A HREF="#statements">here</A>.  This means that you can
+place any number of any type of statement inside your conditional statements.
+<P>
+<U><H4>switch statement</H4></U>
+<p>
+The switch statement is similar to the if/elseif/else construct above.
+Here is the general format:
+<pre>
+   switch(double_expression)
+   {
+      case double_expression:
+      {
+         zero_or_more_statements
+      }
+
+      case double_expression1: case double_expression2:
+      {
+         zero_or_more_statements
+      }
+      break;
+
+      default:
+      {
+         zero_or_more_statements
+      }
+   }
+</pre>
+<p>
+The value supplied as 'switch(double_expression)' is first evaluated
+and then compared to each value listed after the 'case' keywords.
+If a match is found then the statements within the '{}' under
+that case section are executed.  If a match is found for a given
+case section and that section has no 'break' after it then the
+statements under the next case section will also be evaluated
+and so on until a section followed by a 'break' is found.
+<p>
+Lastly, if no match is found within any of the 'case' sections and
+if there is a 'default' section then the statements in the 'default'
+section will be executed.
+<p>
+<U><H4>boolean_expression</H4></U>
+<P>
+There are two situations where a <B>boolean_expression</B> is
+used:
+<P>
+<UL>
+ <LI>inside the 'while' portion of the formula section
+ <LI>with an if or elseif conditional statement
+</UL>
+<P>
+A <B>boolean_expression</B> will be one of:
+<P>
+<UL>
+ <LI>boolean_expression && boolean_expression
+ <LI>boolean_expression || boolean_expression
+ <LI> ( boolean_expression )
+ <LI> !boolean_expression
+ <LI> double_expression < double_expression
+ <LI> double_expression <= double_expression
+ <LI> double_expression > double_expression
+ <LI> double_expression >= double_expression
+ <LI> double_expression == double_expression
+ <LI> double_expression != double_expression
+</UL>
+<P>
+Here are some examples of boolean_expressions:
+<P>
+<UL>
+ <LI>$x > 2 || sin($a) < 0
+ <LI>1 == 2 - 1
+ <LI>fmod(10, $a) <= fmod(10, $b * 2)
+</UL>
+</UL>
+<P>
+<U><H4>for statement</H4></U>
+<P>
+The format of the for statement is as follows:
+<PRE>
+for( statement_list ; boolean_expression; statement_list )
+{
+   zero or more statements
+}
+</PRE>
+<P>
+A <b>statement_list</b> is a comma separated list of set_color or
+assignment statements.  The for statement:
+<UL>
+ <LI>Will execute the first statement_list exactly once, before it does
+     anything else
+ <LI>The statement will execute everything in its block '{' '}' so long
+     as the boolean_expression remains true
+ <LI>At the end of each pass through the statements in the block it will
+     execute the other statement list
+</UL>
+<P>
+Here is an example
+<P>
+<PRE>
+   $a = 0;
+
+   for($i = $j = 0; $i &lt; 10; $i ++, $j ++)
+   {
+      $a = $i + $j;
+   }
+</PRE>
+<P>
+Note that the for statements' statement lists cannot contain conditional
+statements (if/elseif/else) or other for statements.  All other statement
+types are allowed.
+<P>
+<U><H4>print/println statement</H4></U>
+<P>
+This statement can be used when you'd like to print out the values of
+variables inside your formula file.  The println statement is just like
+the print statement except it automatically adds a newline to the
+end of everything it prints.
+<P>
+The format of the print statement is:
+<PRE>
+   print("filename", print_statement_arguments);
+
+   or
+
+   print(print_statement_arguments);
+</PRE>
+<P>
+If "filename" is supplied the output will be printed to the specified file.
+If no "filename" is supplied the output will be written to the console
+(which goes off into oblivion on win32 so use "filename" if you aren't
+running on unix).
+<P>
+The <b>print_statement_arguments</b> are a set of items separated by '.'
+characters.  They can be literal strings, double expressions or
+complex expressions.
+<P>
+Here are some examples:
+<PRE>
+      println("v1: " . $i * 6 . ", v2: " . sqrt($j) ^ 11);
+      print("Hello, World!\n"); // the '\n' appends a new line
+      println("temp.txt", "this is written to the temp.txt file");
+</PRE>
+<P>
+<U><H4>break/continue statement</H4></U>
+<P>
+These statements are only allowed inside a for statement or within the
+while section of the formula file,
+<P>
+The break statement causes the termination of the for or while loop,
+the continue statement causes the remainder of the statements within
+the for or while loop to be skipped and control returns back to the
+beginning of the loop.
+<P>
+Here are some examples:
+<PRE>
+   for($i = 0; $i < 10; $i ++)
+   {
+      if($i == 2) { break; }
+      println("i: " + $i);
+   }
+
+   println("done");
+
+   // The output from the above will be:
+   // i: 0
+   // i: 1
+   // done
+
+   for($i = 0; $i < 4; $i ++)
+   {
+      if($i == 2) { continue; }
+      println("i: " + $i);
+   }
+
+   println("done");
+
+   // The output from the above will be:
+   // i: 0
+   // i: 1
+   // i: 3
+   // done
+</PRE>
+<P>
+Note that the 'break' or 'continue' only affects the inner most loop so
+in this example:
+<PRE>
+   for($i = 0; $i < 2; $i ++)
+   {
+      for($j = 0; $j < 2; $j ++)
+      {
+         if($j == 0) { break; }
+      }
+   }
+</PRE>
+The 'break' will terminate the inner loop but not the outer one.
+</BODY>
+</HTML>

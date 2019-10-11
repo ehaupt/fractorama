@@ -1,0 +1,264 @@
+<HTML>
+ <HEAD><TITLE>Complex Functions</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Complex Functions</H2>
+  <HR>
+  <P>
+  The complex functions are those functions that:
+<UL>
+ <LI>take one or more arguments that are
+     <A HREF="statements.html#complex_expression">complex expressions</A> or
+     <A HREF="statements.html#double_expression">double expressions</A> and
+ <LI>return a complex value
+</UL>
+Some terms that are used in this document:
+<P>
+<UL>
+ <LI><b>i</b> the square root of -1
+</UL>
+<P>
+The set of available double functions is:
+ <UL>
+  <LI>one argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+
+   <TR>
+    <TD>acsc</TD>
+    <TD>inverse cosecant</TD>
+    <TD>acsc(z) = asin(1.0 / z)</TD>
+   </TR>
+   </TR>
+
+   <TR>
+    <TD>acsch</TD>
+    <TD>inverse hyperbolic cosecant</TD>
+    <TD>acsch(z) = asinh(1.0 / z)</TD>
+   </TR>
+   
+   <TR>
+    <TD>acos</TD>
+    <TD>inverse cosine</TD>
+    <TD>
+       acos(z) = -i * log(z + i * sqrt(1.0 - z * z))
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>acosh</TD>
+    <TD>inverse hyperbolic cosine</TD>
+    <TD>acosh(z) = log(z + sqrt(z * z - 1.0))</TD>
+   </TR>
+
+   <TR>
+    <TD>acot</TD>
+    <TD>inverse cotangent</TD>
+    <TD>acot(z) = atan(1.0 / z)</TD>
+   </TR>
+
+   <TR>
+    <TD>acoth</TD>
+    <TD>inverse hyperbolic cotangent</TD>
+    <TD>acoth(z) = atanh(1.0 / z)</TD>
+   </TR>
+
+   <TR>
+    <TD>asec</TD>
+    <TD>inverse secant</TD>
+    <TD>asec(z) = acos(1.0 / z)</TD>
+   </TR>
+
+   <TR>
+    <TD>asech</TD>
+    <TD>inverse hyperbolic cosecant</TD>
+    <TD>asech(z) = acosh(1.0 / z)</TD>
+   </TR>
+
+   <TR>
+    <TD>asin</TD>
+    <TD>inverse sin</TD>
+    <TD>asin(z) = -i * log(i * z + sqrt(1.0 - z * z))</TD>
+   </TR>
+
+   <TR>
+    <TD>asinh</TD>
+    <TD>inverse hyperbolic sine</TD>
+    <TD>asinh(z) = log(z + sqrt(z * z + 1.0))</TD>
+   </TR>
+
+   <TR>
+    <TD>atan</TD>
+    <TD>inverse tangent</TD>
+    <TD>result = tan(z), z = atan(result)</TD>
+   </TR>
+
+   <TR>
+    <TD>atanh</TD>
+    <TD>inverse hyperbolic tangent</TD>
+    <TD>atanh(value) = log((value + 1.0) / (value - 1.0)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>conj</TD>
+    <TD>complex conjugate</TD>
+    <TD>if z = [real, imaginary] then conj(z) = [real, -imaginary]
+   </TR>
+
+   <TR>
+    <TD>cos</TD>
+    <TD>cosine</TD>
+    <TD>cos(z) = (exp(i * z) + exp(-i * z)) / 2</TD>
+   </TR>
+
+   <TR>
+    <TD>cosh</TD>
+    <TD>hyperbolic cosine</TD>
+    <TD>cosh(z) = (exp(z) + exp(-z)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>cot</TD>
+    <TD>cotangent</TD>
+    <TD>cot(z) = cos(z) / sin(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>coth</TD>
+    <TD>hyperbolic cotangent</TD>
+    <TD>coth(z) = cosh(z) / sinh(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>csc</TD>
+    <TD>cosecant</TD>
+    <TD>csc(z) = 1.0 / sin(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>csch</TD>
+    <TD>hyperbolic cosecant</TD>
+    <TD>csch(z) = 1.0 / sinh(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>exp</TD>
+    <TD>exponential</TD>
+    <TD>if z = [real, imaginary] then<BR>
+        exp(z) = exp(real) * (cos(imaginary) + i * sin(imaginary))</TD>
+   </TR>
+
+   <TR>
+    <TD>log</TD>
+    <TD>natural log</TD>
+    <TD>
+      for z = [real, imaginary], we can also express z in terms
+      of a distance 'r' and an angle 'theta'.<P>
+      log(z) = log(r) + i * theta.  Log(z) is a multivalued function</TD>
+   </TR>
+
+   <TR>
+    <TD>sec</TD>
+    <TD>secant</TD>
+    <TD>sec(z) = 1.0 / cos(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>sech</TD>
+    <TD>hyperbolic secant</TD>
+    <TD>sech(z) = 1.0 / cosh(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>sin</TD>
+    <TD>sine</TD>
+    <TD>sin(z) = (exp(i * z) - exp(-i * z)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>sinh</TD>
+    <TD>hyperbolic sine</TD>
+    <TD>sinh(z) = (exp(z) - exp(-z)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>sqrt</TD>
+    <TD>square root</TD>
+    <TD>
+     The square root of z is the number that when multipled by itself is
+     equal to z.  For example:
+     <P>
+     sqrt([0, 8]) == [2, 2]</TD>
+   </TR>
+
+   <TR>
+    <TD>tan</TD>
+    <TD>tangent</TD>
+    <TD>tan(z) = sin(z) / cos(z)</TD>
+   </TR>
+
+   <TR>
+    <TD>tanh</TD>
+    <TD>hyperbolic tangent</TD>
+    <TD>tanh(z) = sinh(z) / cosh(z)</TD>
+   </TR>
+  </TABLE>
+  <P>
+
+  <LI>two argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+
+   <TR>
+    <TD>pow</TD>
+    <TD>the power function</TD>
+    <TD>This function raises the first argument to the power of the second
+        argument
+        <P>
+        Here are some examples
+        <P>
+        pow([2, 2], [2, 0]) = [0, 8]<BR>
+        pow([1, 2], [3, 4]) = [0.12901, 0.0339241]
+        <P>
+        This function can be used with a mixture of complex and real
+        types as in:
+        <P>
+        pow([2, 2], 2)<BR>
+        pow(2, [123, 456])
+        <P>
+        <B>NOTE:</B> You can also write pow(z1, z2) as "z1 ^ z2"
+    </TD>
+   </TR>
+  </TABLE>
+  <P>
+
+  <LI>three argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+   <TR>
+    <TD>rotate</TD>
+    <TD>rotates a point a certain number of degrees around another point</TD>
+    <TD>As an example:<P>
+        z = [2, 0];<BR>
+        z = rotate(z, [0, 0], 90);<P>
+        This example says "rotate the point 'z' 90 degrees around the point
+        [0, 0] (the origin)".  In this case, the result will be [0, 2]</TD>
+   </TR>
+  </TABLE>
+</BODY>
+</HTML>

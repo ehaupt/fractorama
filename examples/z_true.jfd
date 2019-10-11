@@ -1,0 +1,80 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping
+   {
+      (-2, -2, 2, 2) => (960,960)
+   }
+
+ colors {
+      define {
+         gradient(11) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+
+         }
+      }
+      define(10) {
+         gradient(11) {
+            [204 255 204]
+            [0 51 0]
+            [204 255 204]
+         }
+      }
+
+      define(20) {
+         gradient(11) {
+            [204 255 255]
+            [0 51 51]
+            [204 255 255]
+         }
+      }
+   }                              
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z    = current;
+      zold = [-10, -10];
+      
+       while(
+         (real(z)      != real(zold))      ||
+         (imaginary(z) != imaginary(zold))
+      )
+       {
+         // Formula for iteration
+
+         zold = z;
+         z    = z - (z*z*z - 1) / (3 * z*z);
+        
+      }
+
+      if(real(z) > 0)
+      {
+         $color = fmod($count, 10);
+      }
+      else
+      {
+         if(real(z) < -.3 && imaginary(z) > 0)
+         {
+            $color = 10 + fmod($count, 10);
+         }
+         else
+         {
+            $color = 20 + fmod($count, 10);
+         }
+      }      
+      set_color($color);
+   }
+}

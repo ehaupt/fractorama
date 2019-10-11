@@ -1,0 +1,152 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.00000000000000000000,
+       -2.00000000000000000000,
+       2.00000000000000000000,
+       2.00000000000000000000) => (960,960)
+   }
+
+
+   formula
+   {
+      zvalue = 1 / (current * (1 + current ^ 2));
+
+      $xavg = 0;    
+      $yavg = 0;    
+      $mavg = 0;    
+
+      $xmax = 0;    
+      $ymax = 0;    
+      $mmax = 0;    
+
+      $xtot = 0;    
+      $ytot = 0;    
+      $mtot = 0;    
+     
+      zSum           = 1 / current + 1 / current ^ 2;
+      $maxIterations = 15;
+      $tolerance     = 1e-6;
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         zSum += current ^ $count;
+
+         if($count % 2 == 0) { value = sec(zSum); }
+         else                { value = csc(zSum);}
+
+         $x = mag(value ^ 2);
+         $y = mag(value ^ 4);
+         $m = mag(value ^ 8);
+
+         $xavg = ($x + $xavg * $count) / ($count + 1);
+         $yavg = ($y + $yavg * $count) / ($count + 1);
+         $mavg = ($m + $mavg * $count) / ($count + 1);
+
+         $xdev = sqrt(($x - $xavg) * ($x - $xavg));
+         $ydev = sqrt(($y - $yavg) * ($y - $yavg));
+         $mdev = sqrt(($m - $mavg) * ($m - $mavg));
+
+         $xmax = max($xmax, $xdev);
+         $ymax = max($ymax, $ydev);
+         $mmax = max($mmax, $mdev);
+
+         $xtot += $xdev;
+         $ytot += $ydev;
+         $mtot += $mdev;
+     
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot/$count) / $xmax;
+         $g = ($ytot/$count) / $ymax;
+         $b = ($mtot/$count) / $mmax;
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,142 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.78473200000000010000,
+       0.05014746945898798700,
+       0.90521733333333343000,
+       0.14486230366492173000) => (1223,960)
+   }
+
+
+
+
+
+
+
+
+   formula {
+     
+      z = current;
+      zold = [0, 0];
+
+      $xmax = 0;
+      $xmin = 0;
+      $xtot = 0;
+      $ymax = 0;
+      $ymin = 0;
+      $ytot = 0;
+      $mmax = 0;
+      $mmin = 0;
+      $mtot = 0;
+     
+      $stop = 0;
+      $tolerance = 1e-10;
+
+      while($stop == 0 && $count < 20)
+      {
+         if(abs(real(z) - real(zold)) <= $tolerance &&
+            abs(imag(z) - imag(zold)) <= $tolerance)
+         {
+            $stop = 1;
+         }
+         else
+         {           
+            f_z  = pow(sin(z), sqrt(z));
+            fp_z = f_z * (sqrt(z) * csc(z) + log(sin(z)) * 1/(2*sqrt(z)));
+
+            zold = z;
+            z    = z - fp_z / f_z;
+                      
+            $x = real(z) + imag(z);
+            $y = imag(z) * real(z);
+            $m = mag(z);
+
+            $xtot = $xtot + $x;
+            $ytot = $ytot + $y;
+            $mtot = $mtot + $m;
+
+            $xmax = max($xmax, $x);
+            $xmin = min($xmin, $x);
+
+            $ymax = max($ymax, $y);
+            $ymin = min($ymin, $y);
+
+            $mmax = max($mmax, $m);
+            $mmin = min($mmin, $m);
+         }
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);
+         $g = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+         $b = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+
+         // some constants ...
+
+         $pi    = 3.14159265358979323846;
+         $twopi = 2 * $pi;
+
+         // adjust these to taste ... they should be: 0 <= value <= 255
+
+         $rStart = 255;
+         $gStart = 255;
+         $bStart = 255;
+
+         // adjust these to taste ... they should be: 0 <= value <= 2
+
+         $rStep = 1;
+         $gStep = 1;
+         $bStep = 1;
+
+         // Calculate the colors ...
+
+         $r = -cos($twopi * $r);
+         $g = -cos($twopi * $g);
+         $b = -cos($twopi * $b);
+
+         $r = $r * 127 + 127;
+         $g = $g * 127 + 127;
+         $b = $b * 127 + 127;
+
+         $r = $r * $rStep + $rStart;
+         $g = $g * $gStep + $gStart;
+         $b = $b * $bStep + $bStart;
+
+         $r = $r / 360;
+         $g = $g / 360;
+         $b = $b / 360;
+
+         $r = sin($pi * $r);
+         $g = sin($pi * $g);
+         $b = sin($pi * $b);
+
+         $r = $r * 128 + 127;
+         $g = $g * 128 + 127;
+         $b = $b * 128 + 127;      
+         
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+

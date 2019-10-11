@@ -1,0 +1,112 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.39480000000000090000,
+       -1.26786614173228340000,
+       1.39319999999999930000,
+       1.37717322834645640000) => (1012,960)
+   }
+
+   formula {
+
+   // p = [0.238498, 0.519198];
+   // p = [-0.743036, 0.113467];
+   // p = [-0.192175, 0.656734];
+   //  p = [0.108294, -0.670487];
+   // p = [-0.392488, -0.587966];
+    p = [0.138341, 0.649857];
+   // p = [0.278560, -0.003483];
+   // p = [-1.258842, 0.065330];
+   // p = [-1.028482, -0.264756];
+   // p = [0.268545, -0.003483];
+   // p = [0.318623, 0.044699];
+   // p = [0.318623, 0.429799];
+
+      z = current;
+
+
+      $v1total = 0; $v2total = 0; $v3total = 0;
+      $v1min   = 0; $v2min   = 0; $v3min   = 0;
+      $v1max   = 0; $v2max   = 0; $v3max   = 0;
+
+      while($count < 50 && ssq(z) < 1e2)
+      {
+         z = z ^ 2 + p;
+
+         if(false)
+         {
+         $v1 = mag(sec(z));
+         $v2 = mag(csc(z));
+         $v3 = mag(cot(z));
+         }
+
+         else
+         {
+         v = cot(z);
+
+         // p = rotate(p, [0, 0], 20);
+
+         $v1 = imag(v);
+         $v2 = mag(v);
+         $v3 = deg(v);
+         }
+
+         $v1total += $v1; $v2total += $v2; $v3total += $v3;
+
+         $v1min = min($v1, $v1min);
+         $v2min = min($v2, $v2min);
+         $v3min = min($v3, $v3min);
+
+         $v1max = max($v1, $v1max);
+         $v2max = max($v2, $v2max);
+         $v3max = max($v3, $v3max);
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($v1total / $count) - $v1min) / ($v1max - $v1min);
+         $g = (($v2total / $count) - $v2min) / ($v2max - $v2min);
+         $b = (($v3total / $count) - $v3min) / ($v3max - $v3min);
+
+         $r = get_sin_color($r, 255, 1); 
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,162 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (1.37649122807017554315,
+       -0.82179999999999997495,
+       1.45999999999999996447,
+       -0.71049999999999990941) => (720,960)
+   }
+
+
+
+   formula {
+     
+      z1    = current;
+      z1old = [0, 0];
+
+      z2    = current;
+      z2old = [0, 0];
+
+      $x1avg = 0;    
+      $y1avg = 0;    
+      $m1avg = 0;    
+
+      $x2avg = 0;    
+      $y2avg = 0;    
+      $m2avg = 0;    
+
+      $x1max = 0;    
+      $y1max = 0;    
+      $m1max = 0;    
+
+      $x2max = 0;    
+      $y2max = 0;    
+      $m2max = 0;    
+
+      $x1tot = 0;    
+      $y1tot = 0;    
+      $m1tot = 0;    
+
+      $x2tot = 0;    
+      $y2tot = 0;    
+      $m2tot = 0;    
+     
+      while($count < 20 && 
+         ssq(z1 - z1old) > 1e-6 && ssq(z2 - z2old) > 1e-6)
+      {
+         f_z1  = z1 * sec(z1);
+         fp_z1 = z1 * sec(z1) * tan(z1) + sec(z1);
+
+         f_z2  = z2 * csc(z2);
+         fp_z2 = csc(z2) - z2 * cot(z2) * csc(z2);
+
+         z1old = z1;
+         z1    = z1 - fp_z1 / f_z1;
+
+         z2old = z2;
+         z2    = z2 - fp_z2 / f_z2;
+
+         v1 = tan(z1);
+
+         $x1 = real(v1);
+         $y1 = imag(v1);
+         $m1 = mag(v1);
+
+         v2 = tan(z2);
+
+         $x2 = real(v2);
+         $y2 = imag(v2);
+         $m2 = mag(v2);
+
+         $x1avg = ($x1 + $x1avg * $count) / ($count + 1);
+         $y1avg = ($y1 + $y1avg * $count) / ($count + 1);
+         $m1avg = ($m1 + $m1avg * $count) / ($count + 1);
+
+         $x2avg = ($x2 + $x2avg * $count) / ($count + 1);
+         $y2avg = ($y2 + $y2avg * $count) / ($count + 1);
+         $m2avg = ($m2 + $m2avg * $count) / ($count + 1);
+
+         $x1dev = sqrt(($x1 - $x1avg) * ($x1 - $x1avg));
+         $y1dev = sqrt(($y1 - $y1avg) * ($y1 - $y1avg));
+         $m1dev = sqrt(($m1 - $m1avg) * ($m1 - $m1avg));
+
+         $x2dev = sqrt(($x2 - $x2avg) * ($x2 - $x2avg));
+         $y2dev = sqrt(($y2 - $y2avg) * ($y2 - $y2avg));
+         $m2dev = sqrt(($m2 - $m2avg) * ($m2 - $m2avg));
+
+         $x1max = max($x1max, $x1dev);
+         $y1max = max($y1max, $y1dev);
+         $m1max = max($m1max, $m1dev);
+
+         $x2max = max($x2max, $x2dev);
+         $y2max = max($y2max, $y2dev);
+         $m2max = max($m2max, $m2dev);
+
+         $x1tot += $x1dev;
+         $y1tot += $y1dev;
+         $m1tot += $m1dev;
+
+         $x2tot += $x2dev;
+         $y2tot += $y2dev;
+         $m2tot += $m2dev;
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $xtot = ($x1tot + $x2tot);
+         $ytot = ($y1tot + $y2tot);
+         $mtot = ($m1tot + $m2tot);
+         $xmax = ($x1max + $x2max);
+         $ymax = ($y1max + $y2max);
+         $mmax = ($m1max + $m2max);
+
+         $r = ($xtot / $count) / $xmax;
+         $g = ($mtot / $count) / $mmax;
+         $b = ($ytot / $count) / $ymax;
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

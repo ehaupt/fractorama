@@ -1,0 +1,285 @@
+<HTML>
+ <HEAD><TITLE>Colors</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Colors</H2>
+  <HR>
+  <P>
+  The purpose of the <B>colors</B> section is to define a color table -
+a set of rgb values that are accessed by an index.  Before we
+discuss the structure of the <B>colors</B> section, here is some
+preliminary information:
+   <P>
+   <UL>
+    <LI>When we speak of rgb values, we are referring to values expressed
+        in this form:
+        <P>
+        [ red_value green_value blue_value ]
+        <P>
+        Where each value is within the range: 0 &lt;= value &lt;= 255
+        <P>
+        Here are some common colors and their associated rgb values:
+        <P>
+        <TABLE BORDER=1>
+         <TR><TH>Color Name</TH><TH>RGB Values</TH></TR>
+         <TR><TD>red</TD><TD>[255 0 0]<TD></TR>
+         <TR><TD>green</TD><TD>[0 255 0]<TD></TR>
+         <TR><TD>blue</TD><TD>[0 0 255]<TD></TR>
+         <TR><TD>black</TD><TD>[0 0 0]<TD></TR>
+         <TR><TD>white</TD><TD>[255 255 255]<TD></TR>
+         <TR><TD>cyan</TD><TD>[0 255 255]<TD></TR>
+         <TR><TD>magenta</TD><TD>[255 0 255]<TD></TR>
+         <TR><TD>yellow</TD><TD>[255 255 0]<TD></TR>
+        </TABLE>
+    <P>
+    <LI>In general, a color table is just a set of rgb values 
+        organized by index.  Here is a sample color table as an example:
+        <P>
+        <TABLE BORDER=1>
+         <TR><TH>Color Table Index</TH><TH>RGB Value</TH></TR>
+         <TR><TD>0</TD><TD>[255 0 0]</TD></TR>
+         <TR><TD>1</TD><TD>[0 0 255]</TD></TR>
+         <TR><TD>2</TD><TD>[255 0 0]</TD></TR>
+         <TR><TD>3</TD><TD>[0 0 255]</TD></TR>
+         <TR><TD>4</TD><TD>[255 0 0]</TD></TR>
+         <TR><TD>5</TD><TD>[0 0 255]</TD></TR>
+         <TR><TD>6</TD><TD>[255 0 0]</TD></TR>
+         <TR><TD>7</TD><TD>[0 0 255]</TD></TR>
+         <TR><TD>8</TD><TD>[255 0 0]</TD></TR>
+         <TR><TD>9</TD><TD>[0 0 255]</TD></TR>
+        </TABLE>
+        <P>
+        This color table consists of a total of 10 entries (indices 0 => 9)
+        and contains a series of alternating red and blue values.  You access
+        the colors by selecting the appropriate index, for this example:
+        <P>
+        color_table[3] = [0 0 255] (blue)<BR>
+        color_table[8] = [255 0 0] (red)
+   </UL>
+   <P>
+   <U><H2>Structure of the colors section</H2></U>
+The <B>colors</B> section consists of one more more <B>define</B> subsections.
+The general format is as follows:
+   <P>
+   <PRE>
+   colors {
+      define {
+         ...
+      }
+      define {
+         ...
+      }
+    }
+   </PRE>
+   <P>
+   The define command marks the start of one or more color table entries.
+The define command can also take an optional argument as in:
+<P>
+<PRE>
+   colors {
+      define(10) {
+         ...
+      }
+   }
+</PRE>
+<P>
+The argument indicates the starting color index for the rgb values defined
+within the define section.  If this argument is not supplied, the color table
+index just begins where the last define section left off.  If a define
+has no argument and it is the first define, the starting index will be zero.
+<P>
+Within the <B>define</B> command, there are three types of subcommands:
+<P>
+   <OL>
+      <LI>RGB color definition
+      <LI><B>repeat</B> command
+      <LI><B>gradient</B> command
+   </OL>
+<P>
+<U><H4>RGB color definition</H4></U>
+<P>
+Here is an example showing three single color definitions
+   <PRE>
+   colors {
+      define {
+         [0 255 0] [0 0 0] [255 0 0]
+      }
+   }
+   </PRE>
+The resulting color table would look like:
+<P>
+   <PRE>
+      color_table_entry[0] = (0, 255, 0)
+      color_table_entry[1] = (0, 0, 0)
+      color_table_entry[2] = (255, 0, 0)
+   </PRE>
+<U><H4>The repeat command</H4></U>
+<P>
+The <B>repeat</B> command requests that everything within it be duplicated a
+certain number of times.  Here is an example:
+   <PRE>
+   colors {
+      define {
+         repeat(2) { [0 0 0] }
+         repeat(2) {
+            repeat(3) {
+               [255 255 255]
+            }
+            [255 0 0]
+         }
+      }
+   }
+   </PRE>
+<P>
+   As you can see, the <B>repeat</B> command can be nested.  In this
+example, the resulting color table would be:
+   <PRE>
+   color_table_entry[0] = (0, 0, 0)
+   color_table_entry[1] = (0, 0, 0)
+   color_table_entry[2] = (255, 255, 255)
+   color_table_entry[3] = (255, 255, 255)
+   color_table_entry[4] = (255, 255, 255)
+   color_table_entry[5] = (255, 0, 0)
+   color_table_entry[6] = (255, 255, 255)
+   color_table_entry[7] = (255, 255, 255)
+   color_table_entry[8] = (255, 255, 255)
+   color_table_entry[9] = (255, 0, 0)
+   </PRE>
+<U><H4>The gradient command</H4></U>
+<P>
+   The <B>gradient</B> command is useful for filling in a color table with a
+   smooth transition between specified colors, consider:
+   <PRE>
+   colors {
+      define {
+         [0 0 0] [0 0 51] [0 0 102] [0 0 153] [0 0 204] [0 0 255]
+      }
+   }
+   </PRE>
+   This effect could be expressed using a <B>gradient</B> as in:
+   <PRE>
+   colors {
+      define {
+         gradient(6) { [0 0 0] [0 0 255] }
+      }
+   }
+   </PRE>
+   The 6 indicates that a total of 6 color table entries will be created and
+   the starting color will be black ([0 0 0]), the ending color
+   blue ([0 0 255]).
+   <P>
+   The <B>gradient</B> can also handle more than 2 colors, for example:
+   <PRE>
+   colors {
+      define {
+         gradient(11) { [0 0 0] [0 0 255] [0 0 0] }
+      }
+   }
+   </PRE>
+   This would create the following color table:
+   <PRE>
+   color_table_entry[0]  = (0, 0, 0)
+   color_table_entry[1]  = (0, 0, 51)
+   color_table_entry[2]  = (0, 0, 102)
+   color_table_entry[3]  = (0, 0, 153)
+   color_table_entry[4]  = (0, 0, 204)
+   color_table_entry[5]  = (0, 0, 255)
+   color_table_entry[6]  = (0, 0, 204)
+   color_table_entry[7]  = (0, 0, 153)
+   color_table_entry[8]  = (0, 0, 102)
+   color_table_entry[9]  = (0, 0, 51)
+   color_table_entry[10] = (0, 0, 0)
+   </PRE>
+   There are some restrictions on the <B>gradient</B> command:
+   <P>
+   <OL>
+      <LI>There must be at least 2 color entries, so the following is not
+          allowed:
+          <P>
+    <PRE>
+       gradient(10) { [0 0 0] }
+    </PRE>
+      <LI>The number of color entries must not be larger than the size
+          of the gradient.  For this reason, this would not be legal:
+    <PRE>
+       gradient(2) { [0 0 0] [255 0 0] [0 0 255] }
+    </PRE>
+      <LI>The <B>repeat</B> command is not permitted within a <B>gradient</B>
+   </OL>
+   <P>
+   Here is an example colors section combining all the commands:
+   <PRE>
+   colors {
+      define {
+         repeat(2) {
+            [0 0 0] [255 255 255]
+            repeat(3) {
+               gradient(6) { [0 0 0] [0 0 255] }
+            }
+         }
+      }
+   }
+   </PRE>
+   And here is the resulting color table:
+   <PRE>
+   color_table_entry[0]  = (0, 0, 0)
+   color_table_entry[1]  = (255, 255, 255)
+   color_table_entry[2]  = (0, 0, 0)
+   color_table_entry[3]  = (0, 0, 51)
+   color_table_entry[4]  = (0, 0, 102)
+   color_table_entry[5]  = (0, 0, 153)
+   color_table_entry[6]  = (0, 0, 204)
+   color_table_entry[7]  = (0, 0, 255)
+   color_table_entry[8]  = (0, 0, 0)
+   color_table_entry[9]  = (0, 0, 51)
+   color_table_entry[10] = (0, 0, 102)
+   color_table_entry[11] = (0, 0, 153)
+   color_table_entry[12] = (0, 0, 204)
+   color_table_entry[13] = (0, 0, 255)
+   color_table_entry[14] = (0, 0, 0)
+   color_table_entry[15] = (0, 0, 51)
+   color_table_entry[16] = (0, 0, 102)
+   color_table_entry[17] = (0, 0, 153)
+   color_table_entry[18] = (0, 0, 204)
+   color_table_entry[19] = (0, 0, 255)
+   color_table_entry[20] = (0, 0, 0)
+   color_table_entry[21] = (255, 255, 255)
+   color_table_entry[22] = (0, 0, 0)
+   color_table_entry[23] = (0, 0, 51)
+   color_table_entry[25] = (0, 0, 102)
+   color_table_entry[26] = (0, 0, 153)
+   color_table_entry[27] = (0, 0, 204)
+   color_table_entry[28] = (0, 0, 255)
+   color_table_entry[29] = (0, 0, 0)
+   color_table_entry[30] = (0, 0, 51)
+   color_table_entry[31] = (0, 0, 102)
+   color_table_entry[32] = (0, 0, 153)
+   color_table_entry[33] = (0, 0, 204)
+   color_table_entry[34] = (0, 0, 255)
+   color_table_entry[35] = (0, 0, 0)
+   color_table_entry[36] = (0, 0, 51)
+   color_table_entry[37] = (0, 0, 102)
+   color_table_entry[38] = (0, 0, 153)
+   color_table_entry[39] = (0, 0, 204)
+   color_table_entry[40] = (0, 0, 255)
+   </PRE>
+   <A NAME="note">
+   As a final note, it is often useful to make a <B>gradient</B> that spans
+360 entries so that the angle a complex variable makes with the origin
+(in degrees) can be used as an index into the color table values.  An
+example would be the following:
+   <PRE>
+   colors {
+      define {
+         gradient(361) { [0 0 0] [255 255 255] [0 0 0] }
+      }
+   }
+   </PRE>
+Note that we use gradient(361) instead of gradient(360) - the reason is that
+when measuring degrees, 360 degrees is the same as 0 degrees.  For this
+reason, we want to ensure that the color table entry associated with index
+0 is the same as the entry associated with index 360.  In order to accomplish
+this we need 361 entries (0 through 360 inclusive) rather than 360 as one
+might expect.
+ </BODY>
+</HTML>

@@ -1,0 +1,58 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-3.26583351290667510000,
+       -2.02801533734357250000,
+       0.80135210800171031000,
+       2.03917028356481290000) => (1280,960)
+   }
+
+   // Set up our colors - a smooth gradient from a shade of blue, to
+   // white then back to the original shade of blue.  Our gradient
+   // spans 361 colors so that the value at 0 is the same as the
+   // value at 360
+
+   colors {
+      define {
+         gradient(361) {
+            [0 0 102] [255 255 255] [0 0 102]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      c = current;
+      z = current;
+
+      // Stopping condition, note the unusual: cos(imag(z)) > sin(real(z))
+      // portion - it is this part of our stopping condition that creates
+      // the checkerboard appearance this fractal has
+
+      while(cos(imag(z)) > sin(real(z)) && $count < 10 && mag(z) < 1e6)
+      {
+         // Formula for iteration
+
+         z = z * z + c;
+         c = c / 2 + z;
+      }
+
+      // Use color table entry corresponding to the angle that "z"
+      // made relative to the origin when the while loop above terminated
+
+      set_color(old_deg(z));
+   }
+}

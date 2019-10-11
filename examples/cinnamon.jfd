@@ -1,0 +1,116 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-8.00000000000000000000,
+       -8.00000000000000000000,
+       8.00000000000000000000,
+       8.00000000000000000000) => (959,960)
+   }
+
+
+  colors
+  {
+     define {
+        gradient(100) {         
+           [255 204 204][51 0 0][255 204 204]
+           [102 102 127][0 0 25][102 102 127]
+        }
+      }
+   }
+   
+
+   formula
+   {
+      f_c    = sec(current);
+      zvalue = (1 + 2 * f_c) / (f_c ^ 2 + f_c ^ 3);
+     
+      $minValue1 = 0;
+      $maxValue1 = 0;
+      $tot1      = 0;
+      $minValue2 = 0;
+      $maxValue2 = 0;
+      $tot2      = 0;
+
+      point = log(current);
+      zSum  = [0, 0];
+
+      $tolerance     = 1e-6;
+      $maxIterations = 20;
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         zValue = (f_c - point) ^ ($count - 2);
+         zSum  += zValue;
+         
+         value = sin(zSum);
+
+         $value1 = mag(sech(value));
+         $value2 = mag(sech(value));
+
+         $minValue1 = min($minValue1, $value1);
+         $maxValue1 = max($maxValue1, $value1);
+         $tot1     += $value1;
+
+         $minValue2 = min($minValue2, $value2);
+         $maxValue2 = max($maxValue2, $value2);
+         $tot2     += $value2;
+      }
+
+      $index = 0;
+
+
+      if($count > 0)
+      {
+         $value1 = ($tot1 / $count - $minValue1) / ($maxValue1 - $minValue1);
+         $value2 = ($tot2 / $count - $minValue2) / ($maxValue2 - $minValue2);
+
+         if($value1 > $value2) { $index = $value1; }
+         else                  { $index = $value2; }
+
+         $index = 100 * $index;
+      }
+
+      set_color($index);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

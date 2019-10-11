@@ -1,0 +1,666 @@
+<HTML>
+ <HEAD><TITLE>Double Functions</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Double Functions</H2>
+  <HR>
+  <P>
+  The double functions are those functions that:
+<UL>
+ <LI>take one or more arguments that are
+     <A HREF="statements.html#double_expression">double expressions</A> and
+ <LI>return a double value
+</UL>
+Some terms that are used in this document:
+<P>
+<UL>
+ <LI><A HREF="complex_attributes.html#radians">radians</A>
+ <LI><A HREF="complex_attributes.html#pi">pi</A>
+</UL>
+<P>
+The set of available double functions is:
+ <UL>
+  <LI>one argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+
+   <TR>
+    <TD>acsc</TD>
+    <TD>inverse cosecant</TD>
+    <TD>acsc(value) = asin(1.0 / value)</TD>
+   </TR>
+   </TR>
+
+   <TR>
+    <TD>acsch</TD>
+    <TD>inverse hyperbolic cosecant</TD>
+    <TD>acsch(value) = asinh(1.0 / value)</TD>
+   </TR>
+   
+   <TR>
+    <TD>acos</TD>
+    <TD>inverse cosine</TD>
+    <TD>
+     result = cos(value), value = acos(result)
+     <P>
+     The cosine accepts an angle measured in
+     radians and returns a value between -1 and 1 so the inverse cosine
+     expects a value between -1 and 1 and returns an angle in radians.
+     <P>
+     0 &lt;= result &lt;= pi
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>acosh</TD>
+    <TD>inverse hyperbolic cosine</TD>
+    <TD>acosh(value) = log(value + sqrt(value * value - 1.0))</TD>
+   </TR>
+
+   <TR>
+    <TD>acot</TD>
+    <TD>inverse cotangent</TD>
+    <TD>acot(value) = atan(1.0 / value)</TD>
+   </TR>
+
+   <TR>
+    <TD>acoth</TD>
+    <TD>inverse hyperbolic cotangent</TD>
+    <TD>acoth(value) = atanh(1.0 / value)</TD>
+   </TR>
+
+   <TR>
+    <TD>asec</TD>
+    <TD>inverse secant</TD>
+    <TD>asec(value) = acos(1.0 / value)</TD>
+   </TR>
+
+   <TR>
+    <TD>asech</TD>
+    <TD>inverse hyperbolic cosecant</TD>
+    <TD>asech(value) = acosh(1.0 / value)</TD>
+   </TR>
+
+   <TR>
+    <TD>asin</TD>
+    <TD>inverse sin</TD>
+    <TD>result = sin(value), value = asin(result)
+      <P>
+      The sine accepts an angle measured in
+      radians and returns a value between -1 and 1 so the inverse sine
+      expects a value between -1 and 1 and returns an angle in radians.
+      <P>
+      0 &lt;= result &lt;= pi
+   </TR>
+
+   <TR>
+    <TD>asinh</TD>
+    <TD>inverse hyperbolic sine</TD>
+    <TD>asinh(value) = log(value + sqrt(value * value + 1.0))</TD>
+   </TR>
+
+   <TR>
+    <TD>atan</TD>
+    <TD>inverse tangent</TD>
+    <TD>result = tan(value), value = atan(result)
+        <P>
+        The tangent accepts an angle measured in radians and returns a real
+        number so the inverse tangent accepts a real number and retuns
+        an angle measured in radians.
+        <P>
+        -pi/2 &lt;= result &lt;= pi/2
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>atanh</TD>
+    <TD>inverse hyperbolic tangent</TD>
+    <TD>atanh(value) = log((value + 1.0) / (value - 1.0)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>bernoulli</TD>
+    <TD>bernoulli numbers</TD>
+    <TD>bernoulli(n) = the nth bernoulli number (n < 40)</TD>
+   </TR>
+
+   <TR>
+    <TD>bit_not</TD>
+    <TD>bitwise not</TD>
+    <TD>bit_not(value) = value is rounded to an integer and
+        is then returned with each 0 bit turned to a 1 and
+        vice versa.  bit_not(12312322) = -12312323.</TD>
+   </TR>
+
+   <TR>
+    <TD>ceil</TD>
+    <TD>ceiling function</TD>
+    <TD>This function rounds its argument upward to the nearest integer.
+      For example:
+      <P>
+      ceil(1.9) == 2.0.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>cos</TD>
+    <TD>cosine</TD>
+    <TD>The cosine expects arguments passed to it to be numbers measured in
+        radians.  The cosine is a cyclical function with a period of 2 * pi,
+        that is - every 2 * pi it repeats itself so:
+        <P>
+        cos(0) == cos(2 * pi) == cos(-2 * pi) == cos(4 * pi)
+        <P>
+        -1 &lt;= cos(value) &lt;= 1
+    </TD>
+
+   <TR>
+    <TD>cosh</TD>
+    <TD>hyperbolic cosine</TD>
+    <TD>cosh(value) = (exp(value) + exp(-value)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>cot</TD>
+    <TD>cotangent</TD>
+    <TD>cot(value) = cos(value) / sin(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>coth</TD>
+    <TD>hyperbolic cotangent</TD>
+    <TD>coth(value) = cosh(value) / sinh(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>csc</TD>
+    <TD>cosecant</TD>
+    <TD>csc(value) = 1.0 / sin(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>csch</TD>
+    <TD>hyperbolic cosecant</TD>
+    <TD>csch(value) = 1.0 / sinh(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>deg2rad</TD>
+    <TD>convert degrees to radians</TD>
+    <TD>deg2rad(360) = 2 * pi</TD>
+   </TR>
+
+   <TR>
+    <TD>euler</TD>
+    <TD>euler numbers</TD>
+    <TD>euler(n) = the nth euler number (n < 40)</TD>
+   </TR>
+
+   <TR>
+    <TD>exp</TD>
+    <TD>exponential</TD>
+    <TD>
+      The value of the exponential function is the result of raising
+      euler's number (approximately 2.7182818284590452354)
+      to the power of the argument supplied.  exp(value) is:
+      <P>
+      2.7182818284590452354 ^ (x)
+      <P>
+      Where '^' means "raised to the power of"
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>abs</TD>
+    <TD>absolute value</TD>
+    <TD>The absolute value of a real number x is defined as:
+        <P>
+        abs(x) = x  (if x &gt;= 0) example: abs(2)  = 2<BR>
+        abs(x) = -x (if x &lt; 0)  example: abs(-1) = 1
+        <P>
+        Note that abs(x) is always positive.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>fabs</TD>
+    <TD>absolute value</TD>
+    <TD>alternate name for abs</TD>
+   </TR>
+
+   <TR>
+    <TD>fact</TD>
+    <TD>factorial</TD>
+    <TD>fact(value) = value * (value - 1) * (value - 2) * ... * 1</TD>
+   </TR>
+
+   <TR>
+    <TD>floor</TD>
+    <TD>floor</TD>
+    <TD>This function rounds its argument downward to the nearest integer.
+      For example:
+      <P>
+      floor(1.2) == 1.0.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_entry_red</TD>
+    <TD>access color table rgb values</TD>
+    <TD>This function returns the red component for the specified
+        color table entry index.
+      For example:
+      <PRE>
+      colors { define { [255 0 0] } }
+
+      formula {
+         println(get_entry_red(0));
+         ...
+      </PRE>
+      Will print out '255'
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_entry_green</TD>
+    <TD>access color table rgb values</TD>
+    <TD>This function returns the green component for the specified
+        color table entry index.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_entry_blue</TD>
+    <TD>access color table rgb values</TD>
+    <TD>This function returns the blue component for the specified
+        color table entry index.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>log</TD>
+    <TD>natural log</TD>
+    <TD>
+      The log of x is the power that euler's number
+      (approximately 2.7182818284590452354) must be raised to to equal x.  The
+      natural log is the inverse of the exp function, that is:
+      <P>
+      log(exp(x)) == x
+      <P>
+      Note that the natural logarithm function expects its argument to be
+      greater than zero.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>log10</TD>
+    <TD>log base 10</TD>
+    <TD>
+     The value of log10(x) is the power that 10 needs to be raised to
+     to be equal to x.  For example:
+     <P>
+     log10(100) == 2 (since 10 * 10 == 100)
+     <P>
+      Like the natural logarithm, log10 expects its argument to be greater
+      than zero.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>rad2deg</TD>
+    <TD>convert radians to degrees</TD>
+    <TD>rad2deg(2 * pi) = 360</TD>
+   </TR>
+
+   <TR>
+    <TD>sec</TD>
+    <TD>secant</TD>
+    <TD>sec(value) = 1.0 / cos(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>sech</TD>
+    <TD>hyperbolic secant</TD>
+    <TD>sech(value) = 1.0 / cosh(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>sin</TD>
+    <TD>sine</TD>
+    <TD>
+     The sine expects arguments passed to it to be numbers measured in
+     radians.  The sine is a cyclical function with a period of 2 * pi,
+     that is - every 2 * pi it repeats itself so:
+     <P>
+     sin(0) == sin(2 * pi) == sin(-2 * pi) == sin(4 * pi)
+     <P>
+     -1 &lt;= sin(value) &lt;= 1
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>sinh</TD>
+    <TD>hyperbolic sine</TD>
+    <TD>sinh(value) = (exp(value) - exp(-value)) / 2.0</TD>
+   </TR>
+
+   <TR>
+    <TD>sqrt</TD>
+    <TD>square root</TD>
+    <TD>
+     The square root of x is the number that when multipled by itself is
+     equal to x.  For example:
+     <P>
+     sqrt(4) == 2.
+     <P>
+     The square root expects its argument to be greater than or equal to zero.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>tan</TD>
+    <TD>tangent</TD>
+    <TD>tan(value) = sin(value) / cos(value)</TD>
+   </TR>
+
+   <TR>
+    <TD>tanh</TD>
+    <TD>hyperbolic tangent</TD>
+    <TD>tanh(value) = sinh(value) / cosh(value)</TD>
+   </TR>
+  </TABLE>
+  <P>
+
+  <LI>two argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+
+   <TR>
+    <TD>atan2</TD>
+    <TD>the inverse tangent</TD>
+    <TD>
+      Similar to atan except that two arguments
+      are used - also, the range of returned values is different.  With
+      the exception of the range of return values, the following is true:
+      <P>
+      atan2(y, x) == atan(y / x)
+      <P>
+      -pi &lt;= atan2(y, x) &lt;= pi
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>bit_and</TD>
+    <TD>bitwise and</TD>
+    <TD>
+     The bitwise and of the two supplied arguments (each rounded to
+     integers).  bit_and(5, 2) = 0
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>bit_or</TD>
+    <TD>bitwise or</TD>
+    <TD>
+     The bitwise or of the two supplied arguments (each rounded to
+     integers).  bit_or(5, 2) = 7
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>bit_shl</TD>
+    <TD>bitwise left shift</TD>
+    <TD>
+     The shift the bits of the first argument left by the number of
+     positions specified by the second argument (both rounded to
+     integers).  bit_shl(1, 5) = 32</TD>
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>bit_shr</TD>
+    <TD>bitwise right shift</TD>
+    <TD>
+     The shift the bits of the first argument right by the number of
+     positions specified by the second argument (both rounded to
+     integers).  bit_shr(64, 3) = 8</TD>
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>bit_xor</TD>
+    <TD>bitwise exclusive or</TD>
+    <TD>
+     The bitwise xor of the two supplied arguments (each rounded to
+     integers).  bit_xor(5, 3) = 6
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>mod</TD>
+    <TD>the modulus or remainder function</TD>
+    <TD>To compute mod(x, y) calculate the value 'n' by dividing x by y
+        and rounding the result towards zero to an integer.
+       <P>
+       The return value of mod(x, y) then is: x - n * y
+       <P>
+       The mod function expects that its second argument is not zero.
+       <P>
+       Some examples:<BR>
+        mod(10,   2) == 0<BR>
+        mod(10.1, 2) == 0.1<BR>
+        mod(10.5, 2) == 0.5<BR>
+        mod(11,   2) == 1.0<BR>
+        mod(11.2, 2) == 0.2<BR>
+        mod(11.5, 2) == 1.5<BR>
+        mod(12,   2) == 0
+        <P>
+        the returned value is a real number &gt;= 0 and less than the first
+        argument.  In the above examples, note that 2 is the second argument
+        to mod and that the result is always less than 2.
+        <P>
+        <B>NOTE:</B> You can also write mod(x, y) as "x % y"
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>fmod</TD>
+    <TD>the modulus or remainder function</TD>
+    <TD>alternate name for 'mod'</TD>
+   </TR>
+
+   <TR>
+    <TD>pow</TD>
+    <TD>the power function</TD>
+    <TD>This function raises the first argument to the power of the second
+        argument
+        <P>
+        Here are some examples
+        <P>
+        pow(2, 3)  == 8  (2 * 2 * 2)<BR>
+        pow(3, 4)  == 91 (3 * 3 * 3 * 3)<BR>
+        <P>
+        The pow function can handle any two real values except when the first
+        argument is negative and the second argument is not an integer.
+        <P>
+        <B>NOTE:</B> You can also write pow(x, y) as "x ^ y"
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>min</TD>
+    <TD>the minimum function</TD>
+    <TD>if a &lt;= b then min(a, b) = a<BR>
+        if a &lt; b then min(a, b) = b
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>max</TD>
+    <TD>the maximum function</TD>
+    <TD>if a &gt;= b then max(a, b) = a<BR>
+        if a &lt;  b then max(a, b) = b
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>gamma</TD>
+    <TD>the gamma function</TD>
+    <TD>This function can be used to adjust color values.
+        <P>
+        0 &lt;= first argument &lt;= 255
+        <P>
+        0 &lt; second argument
+        <P>
+        gamma(x, y) = 255 * ((x/255) ^ (1 / y))
+        <P>
+        values of y closer towards zero produce darker colors, values of
+        y farther from zero produce lighter colors
+    </TD>
+   </TR>
+  </TABLE>
+  <P>
+
+  <LI>three argument functions:
+  <P>
+  <TABLE BORDER=1>
+   <TR>
+    <TH>Function Name</TH>
+    <TH>Description</TH>
+    <TH>Notes</TH>
+   </TR>
+   <TR>
+    <TD>get_sin_color</TD>
+    <TD>maps value (0 &lt;= value &lt;= 1) to an
+        rgb value (0 &lt;= rgb &lt;= 255)</TD>
+    <TD>This function is very useful when doing direct color fractals.  Its
+        arguments:
+        <P>
+        first argument (value to be mapped) => 0 &lt;= value &lt;= 1<BR>
+        second argument (start value) => 0 &lt;= value &lt;= 255<BR>
+        third argument (step value)   => 0 &lt; value
+        <P>
+        This function produces a smooth color gradient using a sin and cos
+        transformation of the original value (0 &lt;=
+        value &lt;= 1).  It returns
+        a value between 0 and 255.
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_cos_color</TD>
+    <TD>like 'get_sin_color', maps value (0 &lt;= value &lt;= 1) to an
+        rgb value (0 &lt;= rgb &lt;= 255)</TD>
+    <TD>This function is very useful when doing direct color fractals.  Its
+        arguments:
+        <P>
+        first argument (value to be mapped) => 0 &lt;= value &lt;= 1<BR>
+        second argument (start value) => 0 &lt;= value &lt;= 255<BR>
+        third argument (scale value)   => 0 &lt; value
+        <P>
+        This function uses the following formula to compute its return
+        value:
+        <p>
+        offset = pi * (offset / 255.0)<br>
+        result = cos(offset + pi + scale * value * 2 * pi)<br>
+        return(127.5 * (1.0 + result));
+        <p>
+        Again, like 'get_sin_color' it returns a value between
+        0 and 255.
+    </TD>
+
+   <TR>
+    <TD>get_hsv_red</TD>
+    <TD>Given h, s and v - return the red component that results
+       from performing a hsv => rgb conversion</TD>
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_hsv_green</TD>
+    <TD>Given h, s and v - return the green component that results
+       from performing a hsv => rgb conversion</TD>
+    </TD>
+   </TR>
+
+   <TR>
+    <TD>get_hsv_blue</TD>
+    <TD>Given h, s and v - return the blue component that results
+       from performing a hsv => rgb conversion</TD>
+    </TD>
+   </TR>
+
+  </TABLE>
+
+  <P>
+  <LI>additional functions
+  <P>
+  map_color - can accept a variable number of arguments.  It
+  is also useful for making direct color fractals.  The general format of
+  map_color is:
+  <ul>
+  <P>
+  map_color(value : colors : percentages)
+  <P>
+  The first argument 'value' will be a number: 0 &lt;= value &lt;= 1
+  <P>
+  The 'colors' argument will be a comma separated list of values between 0 and
+  255.
+  <P>
+  The 'percentages' argument will be a comma saparated list of values between 0
+  and 100 (0% and 100%).
+  <P>
+  Here's an example of how map color might be used:
+  <P>
+  $value = .5;<BR>
+  $result = map_color($value : 0, 255 : 100);
+  <P>
+  In this example, a $value of 0 would return 0, a $value of 1 would return 255.
+  This map_color statement says: "The interval [0, 255] is to be 100% of the
+  color range we want to map [0, 1] onto"
+  <P>
+  Another example:
+  <P>
+  $value  = .5;<BR>
+  $result = map_color($value : 0, 255, 0 : 50, 50);
+  <P>
+  In this case we'll spend 50% on the interval [0, 255] and 50% on the
+  interval [255, 0] so a value of 0 or 1 will give us back 0 whereas a value
+  of .5 will give us 255.
+  <P>
+  Finally, note that there will always be one less percentage value than there
+  were color values.  This is because the percentage values indicate how much
+  of the range will be used up between two colors.
+  </ul>
+  <p>
+  text_intersect(text, origin, $height, $thickness, point) - this function
+  allows the use of a string of text as a trapping region (similar to
+  what we describe <a href="region.html">here</a>).
+  <ul>
+  This is basically a fun or experimental function and at the moment it
+  only supports lower case letters, upper case letters and spaces.
+  <p>
+  If you call text_intersect and get back a value of -1 then the supplied
+  point does not interesect the text string, a value between 0 and 1
+  indicates that the point does intersect the text with zero meaning
+  "right on the text" whereas one meaning "just on the edge of the
+  text".  This makes the use of gamma correction for 3D effects easy
+  to accomplish, for example.
+  <p>
+  The 'origin' is the starting point of the text, the 'height' is the
+  height of the text, the 'thickness' is the thickness of the letters
+  and 'point' is the point to be tested to see if it falls within
+  the boundary of the text string.
+  </ul>
+</BODY>
+</HTML>

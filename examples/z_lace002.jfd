@@ -1,0 +1,79 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.77094588800274399532,
+       -2.76950824698572439786,
+       2.61452705599862822439,
+       2.96307117928739538470) => (827,960)
+   }
+
+
+
+
+
+  colors {
+      define {
+         gradient(361) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+           
+         }
+      } 
+      define {
+         gradient(361) {
+            [204 255 204]
+            [0 51 0]
+            [204 255 204]
+         }
+      }
+      
+      define {
+         gradient(361) {
+            [204 255 255] 
+            [0 51 51]
+            [204 255 255]
+            
+         }
+      }
+   }
+   
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 100 && mag(z) < 100 && mag(c) < 100)
+      {
+         // Formula for iteration
+
+         z = log(z + c*c + z*z*z);
+         c = exp(c + z*z + c*c*c);
+      }
+
+      // Use color table entry corresponding to the angle "z"
+      // made when the while loop above terminated
+
+      set_color( fmod($count, 3) * 360 + fmod(abs(real(z)), 2) * 180);
+   }
+}
+
+
+
+

@@ -1,0 +1,105 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.35612441116610160652,
+       -1.55018865411568662616,
+       2.78966168069959730147,
+       1.56370806270772644275) => (357, 457)
+   }
+
+   formula
+   {
+      a      = sec(current);
+      x      = csc(current);
+      answer = a;
+
+      $v1total = 0; $v2total = 0; $v3total = 0;
+      $v1min   = 0; $v2min   = 0; $v3min   = 0;
+      $v1max   = 0; $v2max   = 0; $v3max   = 0;
+
+      // This fractal is based upon the idea that the limit
+      // as x goes to zero of sin(a * x) / x will be a (for
+      // all values of a).  Our 'answer' variable then is
+      // set to 'a' and each time we go through the loop we'll compare
+      // 'value' to 'answer' to see how close we are to 'a'.
+      // A the end of the loop we move 'x' towards the origin
+      // via:
+      //
+      //   p = [0, 0];
+      //   x = .9 * rotate(x, p, 15);
+      //
+      // Which makes 'x' follow a decreasing spiral path towards
+      // the origin (0, 0)
+
+      while($count < 30)
+      {
+         value = sin(a * x) / (x/2);
+
+         // Changing the right hand side of v = ... can
+         // produce interesting variations such as:
+         // v = csc(value);
+         // v = sec(value);
+
+         v = cot(value);
+
+         $v1 = real(v);
+         $v2 = imag(v);
+         $v3 = mag(v);
+
+         $v1total += $v1;
+         $v2total += $v2;
+         $v3total += $v3;
+
+         $v1min = ($count == 0 ? $v1 : min($v1, $v1min));
+         $v2min = ($count == 0 ? $v2 : min($v2, $v2min));
+         $v3min = ($count == 0 ? $v3 : min($v3, $v3min));
+
+         $v1max = ($count == 0 ? $v1 : max($v1, $v1max));
+         $v2max = ($count == 0 ? $v2 : max($v2, $v2max));
+         $v3max = ($count == 0 ? $v3 : max($v3, $v3max));
+
+         if(ssq(value - answer) < 1e-4) { break; }
+
+         // Changing the value of 'p' below can produce some
+         // interesting variations, for example:
+             p = [5, 0];
+         //    p = current;
+         //   p = a;
+
+         //p = [0, 0];
+         x = .9 * rotate(x, p, 20);
+      }
+
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $v1 = (($v1total / $count) - $v1min) / ($v1max - $v1min);
+         $v2 = (($v2total / $count) - $v2min) / ($v2max - $v2min);
+         $v3 = (($v3total / $count) - $v3min) / ($v3max - $v3min);       
+
+
+         $r = get_sin_color($v3, 235, 1.5);
+         $g = get_sin_color($v3, 245, 1);
+         $b = get_sin_color($v3, 205, 1);
+
+/*         $r = get_sin_color($v3, 125, 1.);
+         $g = get_sin_color($v3, 185, 1.4);
+         $b = get_sin_color($v3, 255, 1.5); */
+
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+

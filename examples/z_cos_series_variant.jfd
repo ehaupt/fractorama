@@ -1,0 +1,129 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.99710139318885449011,
+       -0.39931325000000000847,
+       1.56578947368421061981,
+       0.42801324999999995624) => (659,960)
+   }
+
+
+
+   formula
+   {
+      f_c = tan(current);
+      zvalue = cos(f_c);
+     
+      $xmin = 0;
+      $ymin = 0;
+      $mmin = 0;
+
+      $xmax = 0;
+      $ymax = 0;
+      $mmax = 0;
+
+      $xtot = 0;
+      $ytot = 0;
+      $mtot = 0;
+
+      zSum           = [0, 0];
+      $denominator   = 1;
+      $maxIterations = 20;
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > 1e-6)
+      {
+         if($count % 2 == 0) { $factor = 1;  }
+         else                { $factor = -1; }
+
+         $denominator = fact(2 * $count);
+         zSum += $factor * (f_c ^ (2 * $count)) / $denominator;
+
+         value = sech(zSum);
+
+         $x = mag(value);
+         $y = mag(value ^ 2);
+         $m = mag(value ^ 3);
+
+         $xmin = min($x, $xmin);
+         $ymin = min($y, $ymin);
+         $mmin = min($m, $mmin);
+
+         $xmax = max($x, $xmax);
+         $ymax = max($y, $ymax);
+         $mmax = max($m, $mmax);
+
+         $xtot += $x;
+         $ytot += $y;
+         $mtot += $m;
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot / $count - $xmin) / ($xmax - $xmin);
+         $g = ($ytot / $count - $ymin) / ($ymax - $ymin);
+         $b = ($mtot / $count - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($b, $r, $g);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,160 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.28029512516469120000,
+       -1.69325808474424530000,
+       0.83600527009222514000,
+       1.70020693361999340000) => (881,960)
+   }
+
+
+
+
+
+   colors
+   {
+      define(0)
+      {
+         gradient(101) { [0 0 0][204 35 136][0 0 0] }
+      }
+      define(100)
+      {
+         gradient(101) { [0 0 0][4 217 215][0 0 0] }
+      }
+   }
+
+
+   formula
+   {
+      z              = current;
+      c              = current;
+      $stop          = 0;
+      $maxIterations = 20;
+
+      $xmax = 0; $xmin = 0; $xtot = 0;
+      $ymax = 0; $ymin = 0; $ytot = 0;
+      $mmax = 0; $mmin = 0; $mtot = 0;
+
+      // some constants ...
+
+      $pi        = 3.14159265358979323846;
+      $twopi     = 2 * $pi;
+      $distance  = 0;
+      $tolerance = .25;
+
+      while($stop == 0 && $count < $maxIterations)
+      {
+         $x = real(z);
+         $y = imag(z);
+         $m = mag(z);
+
+         $xtot = $xtot + $x; $xmax = max($xmax, $x); $xmin = min($xmin, $x);
+         $ytot = $ytot + $y; $ymax = max($ymax, $y); $ymin = min($ymin, $y);
+         $mtot = $mtot + $m; $mmax = max($mmax, $m); $mmin = min($mmin, $m);
+
+         $nSteps    = 5;
+         $angleStep = $twopi / $nSteps;       
+
+         for($angle = 0; $stop == 0 && $angle < $twopi; $angle += $angleStep)
+         {
+            $radius = 1;            
+            $sValue = sin($angle);
+            $cValue = cos($angle);
+
+            for($radius = 1; $stop == 0 && $radius < $nSteps; $radius ++)
+            {
+               $tx = $radius * $cValue;
+               $ty = $radius * $sValue;
+
+               $distance = mag(z - [$tx, $ty]);
+
+               if($distance <= $tolerance)
+               {
+                  $stop = 1;
+               }
+            }
+         }
+
+         if($stop == 0)
+         {
+            z = z*z+c;             
+         }
+      }
+
+      if($count < $maxIterations)
+      {
+         $value = 100 * (fmod($count, 2) + $distance / $tolerance);
+
+         set_color($value);
+      }
+      else
+      {
+         $r = 0;
+         $g = 0;
+         $b = 0;
+      
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);
+         $g = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+         $b = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+
+         // adjust these to taste ... they should be: 0 <= value <= 255
+
+         $rStart = 255;
+         $gStart = 255;
+         $bStart = 255;
+
+         // adjust these to taste ... they should be: 0 <= value <= 2
+
+         $rStep = 1;
+         $gStep = 1;
+         $bStep = 1;
+
+         // Calculate the colors ...
+
+         $r = -cos($twopi * $r);
+         $g = -cos($twopi * $g);
+         $b = -cos($twopi * $b);
+
+         $r = $r * 127 + 127;
+         $g = $g * 127 + 127;
+         $b = $b * 127 + 127;
+
+         $r = $r * $rStep + $rStart;
+         $g = $g * $gStep + $gStart;
+         $b = $b * $bStep + $bStart;
+
+         $r = $r / 360;
+         $g = $g / 360;
+         $b = $b / 360;
+
+         $r = sin($pi * $r);
+         $g = sin($pi * $g);
+         $b = sin($pi * $b);
+
+         $r = $r * 128 + 127;
+         $g = $g * 128 + 127;
+         $b = $b * 128 + 127;
+
+         set_color($r, $g, $b);
+      }
+   }
+}
+
+
+
+
+
+
+
+
+
+

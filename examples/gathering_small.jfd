@@ -1,0 +1,83 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-0.64996186009726908406,
+       -0.80578066842321949270,
+       0.60925678751820233625,
+       0.81028970435038605302) => (357*16, 457*16)
+   }
+
+   formula
+   {
+      z      = asec(current);
+      answer = exp(z);
+
+      $v1total = 0; $v2total = 0; $v3total = 0;
+      $v1min   = 0; $v2min   = 0; $v3min   = 0;
+      $v1max   = 0; $v2max   = 0; $v3max   = 0;
+
+      m = acsc(current);
+
+      while($count < 30)
+      {
+         value = (1 + z / m) ^ m;
+
+         diff = value - answer;
+
+         if(ssq(diff) < 1e-4) { break; }
+
+         v = tan(diff);
+
+         $v1 = real(v);
+         $v2 = imag(v);
+         $v3 = mag(v);
+
+         $v1total += $v1;
+         $v2total += $v2;
+         $v3total += $v3;
+
+         $v1min = ($count == 0 ? $v1 : min($v1, $v1min));
+         $v2min = ($count == 0 ? $v2 : min($v2, $v2min));
+         $v3min = ($count == 0 ? $v3 : min($v3, $v3min));
+
+         $v1max = ($count == 0 ? $v1 : max($v1, $v1max));
+         $v2max = ($count == 0 ? $v2 : max($v2, $v2max));
+         $v3max = ($count == 0 ? $v3 : max($v3, $v3max));
+
+         m *= 2;
+      }
+
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $v1 = (($v1total / $count) - $v1min) / ($v1max - $v1min);
+         $v2 = (($v2total / $count) - $v2min) / ($v2max - $v2min);
+         $v3 = (($v3total / $count) - $v3min) / ($v3max - $v3min);       
+
+         $r = get_sin_color($v1, 255, 1.9);
+         $g = get_sin_color($v1, 205, 1.6);
+         $b = get_sin_color($v1, 235, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+

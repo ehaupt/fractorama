@@ -1,0 +1,107 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-0.74183349367268636154,
+       0.11869250075972515024,
+       -0.74093670138423939342,
+       0.11954011209547911465) => (1280,903)
+   }
+
+   // Set up our colors - here we have three sets of colors.  The
+   // first set will be shades of green, the second: shades of cyan and
+   // the last set will be shades of yellow
+
+   colors {
+      define {
+         gradient(361) {
+            [0 51 0]
+            [204 255 204]
+            [0 51 0]
+         }
+      }
+      
+      define {
+         gradient(361) {
+            [0 51 51]
+            [204 255 255]
+            [0 51 51]
+         }
+      }
+      define {
+         gradient(361) {
+            [204 153 0]
+            [255 255 204]
+            [204 153 0]
+         }
+      }
+      
+   }
+   
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 100 && magnitude(z) < 4)
+      {
+         // Formula for iteration, note that z = z * z + c is the
+         // standard mandelbrot fractal formula
+
+         z = z * z + c;
+      }
+
+      // To choose between the 3 sets of colors we defined, we use:
+      //
+      // fmod($count, 3) * 360
+      //
+      // As this results in:
+      //
+      // $value = 0   (when $count is divisible by 3)
+      // $value = 360 (when $count divided by 3 leaves a remainder of 1)
+      // $value = 720 (when $count divided by 3 leaves a remainder of 2)
+      //
+      // We then add:
+      //
+      // abs(sin(real(z) + imaginary(z))) * 180
+      //
+      // Noting that:
+      //
+      // -1 <= sin(real(z) + imaginary(z))       <= 1
+      // 0  <= abs(real(z) + imaginary(z))       <= 1
+      // 0  <= abs(real(z) + imaginary(z)) * 180 <= 180
+      //
+      // By only multiplying by 180, we restrict the chosen color to the
+      // first half of the selected set of colors
+
+      $value = 0;
+
+      if(fmod($count, 3) == 1)
+      {
+         $value = 360;
+      }
+      else
+      {
+         if(fmod($count, 3) == 2)
+         {
+            $value = 720;
+         }
+      }
+
+      set_color($value + abs(sin(real(z) + imaginary(z))) * 180);
+   }
+}

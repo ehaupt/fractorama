@@ -1,0 +1,67 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.45842427297738686000,
+       -0.28244263168642281000,
+       1.04113049668531940000,
+       0.30289914756109515000) => (1132,960)
+   }
+
+
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+      
+      $amax = 0; $amin = 0; $atot = 0;
+      $bmax = 0; $bmin = 0; $btot = 0;
+      $cmax = 0; $cmin = 0; $ctot = 0;
+
+      while($count < 100 && ssq(z) < 16)
+      {
+         z = log(z + c);
+         c = exp(z + c);
+                      
+         value = sec(z);
+
+         $v1 = real(value);
+         $v2 = imag(value);
+         $v3 = mag(value);
+
+         $amax = max($amax, $v1); $amin = min($amin, $v1); $atot += $v1;
+         $bmax = max($bmax, $v2); $bmin = min($bmin, $v2); $btot += $v2;
+         $cmax = max($cmax, $v3); $cmin = min($cmin, $v3); $ctot += $v3;
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($atot / $count) - $amin) / ($amax - $amin);
+         $g = (($btot / $count) - $bmin) / ($bmax - $bmin);
+         $b = (($ctot / $count) - $cmin) / ($cmax - $cmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+

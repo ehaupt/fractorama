@@ -1,0 +1,70 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (34.32911585365853568419,
+       -1.73160173160173136431,
+       36.64999999999999857891,
+       1.73160173160173180840) => (860,960)
+   }
+
+
+   // Set up our colors - here we use two color ranges, the first
+   // a series of red values, the second a series of blue values
+
+  colors {
+      define(0) {
+         gradient(361) {
+            [255 204 204]
+            [51 0 0]
+            [255 204 204]
+           
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [204 204 255]
+            [0 0 51]
+            [204 204 255]
+            
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 100 && magnitude(z) < 4)
+      {
+         // Formula for iteration
+
+         z = cos(z) - cos(c);
+         c = sin(z) - sin(c);
+      }
+
+      // Using fmod($count, 2) * 360 allows us to select the set of red
+      // entries when $count is even (fmod($count, 2) * 360 = 0 when $count
+      // is even) and the blue entries when $count is odd
+      // (fmod($count, 2) * 360 = 360 when $count is odd).  We then add
+      // the angle 'z' made with the origin (degrees(z)) to select the
+      // specific color value within the selected range.
+
+      set_color(fmod($count, 2) * 360 + old_deg(z));
+   }
+}

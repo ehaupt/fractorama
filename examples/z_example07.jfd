@@ -1,0 +1,65 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-4, 1.25, -2.5, 3.25) => (1280,960)
+   }
+
+   // Set up our colors - we effectively have three color tables here,
+   // the first contains shades of green, the second: shades of blue and
+   // the last: shades of yellow
+
+   colors {
+      define {
+         gradient(361) {
+            [0 51 0]
+            [204 255 204]
+            [0 51 0]
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [204 153 0]
+            [255 255 204]
+            [204 153 0]
+         }
+      }
+      define(720) {
+         gradient(361) {
+            [0 51 51]
+            [204 255 255]
+            [0 51 51]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      c = current;
+      z = [0, 0];
+
+      while($count < 50 && magnitude(z) < 2)
+      {
+         z = pow(cos(z), sin(c));
+      }
+
+      // We want to assign our color based upon the angle 'z' made with
+      // the origin when the above loop exited (degrees(z)), we also want
+      // to alternate between our green, blue and yellow color tables.
+      // By using: fmod($count, 3) * 360 we'll get
+      // 0   (if $count was divisible by 3)
+      // 360 (if the remainder when $count is divided by 3 was 1)
+      // 720 (if the remainder when $count is divided by 3 was 2)
+
+      set_color(fmod($count, 3) * 360 + old_deg(z));
+   }
+}

@@ -1,0 +1,126 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (1.01674300254452942838,
+       -0.88589999999999990976,
+       2.30105597964376595854,
+       0.88584000000000007180) => (692,960)
+   }
+
+   formula {
+
+      z = [0, 0];
+
+      $xmin = 0;    
+      $ymin = 0;    
+      $mmin = 0;    
+
+      $xmax = 0;    
+      $ymax = 0;    
+      $mmax = 0;    
+
+      $xtot = 0;    
+      $ytot = 0;    
+      $mtot = 0;    
+
+      $flag = 0;
+
+      p   = [0, 0];
+      $r1 = 1;
+      $r2 = 1.05;
+      $r3 = 2;
+      $r4 = 2.05;
+
+      while($count < 30 && ssq(z) < 1e4)
+      {
+         if($flag == 0)
+         {
+            if(
+               inside(
+                  z,
+                  r_and(
+                     r_not(r_spoly(p, 5, $r1, 0)),
+                     r_spoly(p, 5, $r2, 0)
+                  )
+               )
+            )
+            {
+               $flag = 1;
+            }
+         }
+         else
+         {
+            if(
+               inside(
+                  z,
+                  r_and(
+                     r_not(r_spoly(p, 5, $r3, 0)),
+                     r_spoly(p, 5, $r4, 0)
+                  )
+               )
+            )
+            {
+               $flag = 0;
+            }
+         }
+
+         if($flag == 0) { z = sec(z - current); }
+         else           { z = csc(z - current); }
+
+         z = log(z);
+
+         value = z;
+
+         $x = real(value);
+         $y = imag(value);
+         $m = mag(value);
+
+         $xmin = min($xmin, $x);
+         $ymin = min($ymin, $y);
+         $mmin = min($mmin, $m);
+
+         $xmax = max($xmax, $x);
+         $ymax = max($ymax, $y);
+         $mmax = max($mmax, $m);
+
+         $xtot += $x;
+         $ytot += $y;
+         $mtot += $m;
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot/$count - $xmin) / ($xmax - $xmin);
+         $g = ($ytot/$count - $ymin) / ($ymax - $ymin);
+         $b = ($mtot/$count - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+

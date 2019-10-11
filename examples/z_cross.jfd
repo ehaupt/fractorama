@@ -1,0 +1,118 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.93221675262006464813,
+       -1.46632583749854661370,
+       1.08883545387814084648,
+       -1.24544622333566823436) => (681,960)
+   }
+
+   formula {
+
+      z     = current;
+      $stop = 0;
+      $xmin = 0; $xmax = 0; $xtot = 0;
+      $ymin = 0; $ymax = 0; $ytot = 0;
+      $mmin = 0; $mmax = 0; $mtot = 0;
+      $dist = 0;
+      $offset = .25;
+      coff1   = [$offset, $offset];
+      coff2   = [$offset, -$offset];
+      $steps  = (2 - -2) / $offset;
+
+      while($count < 20 && ssq(z) < 16 && $stop == 0)
+      {
+         z = sec(z);
+
+         $x = real(z);
+         $y = imag(z);
+         $m = mag(z);
+
+         $xtot += $x;
+         $ytot += $y;
+         $mtot += $m;
+
+         $xmin = min($xmin, $x); $xmax = max($xmax, $x);
+         $ymin = min($ymin, $y); $ymax = max($ymax, $y);
+         $mmin = min($mmin, $m); $mmax = max($mmax, $m);
+
+         p1 = [-2, -2];
+         p2 = p1 + coff1;
+
+         p3 = [-2, 2];
+         p4 = p3 + coff2;
+
+         value = sec(z);
+
+         for($i = 0; $count > 0 && $stop == 0 && $i < $steps; $i ++)
+         {
+            if(inside(value, r_cross(p1, p2, .05, .05)))
+            {
+               $stop = 1;
+               $dist = mag(value - (p1 + p2)/2);
+            }
+            elseif(inside(value, r_cross(p3, p4, .05, .05)))
+            {
+               $stop = 1;
+               $dist = mag(value - (p3 + p4)/2);
+
+            }
+            else
+            {
+               p1 += coff1; p2 += coff1; p3 += coff2; p4 += coff2;
+
+            }
+         }
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($stop == 1)
+      {
+         $value = (1-$dist/($offset/2)) * 255;
+
+         if($count % 3 == 0)     { $r = $value; }
+         elseif($count % 3 == 1) { $g = $value; }
+         else                    { $b = $value; }
+      }
+      elseif($count > 0)
+      {
+         $r = (($xtot / $count) - $xmin) / ($xmax - $xmin);
+         $g = (($ytot / $count) - $ymin) / ($ymax - $ymin);
+         $b = (($mtot / $count) - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

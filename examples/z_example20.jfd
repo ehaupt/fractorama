@@ -1,0 +1,71 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-0.12118032786885246654,
+       -0.13866666666666666030,
+       0.07436065573770492265,
+       0.13688888888888889328) => (1280,960)
+   }
+
+   // Set up our colors - here we have two color ranges, the first
+   // a series of cyan values, the second a series of yellow values
+
+   colors {
+      define(0){
+         gradient(361) {
+            [204 255 255]
+            [0 102 102]
+            [204 255 255]
+         }
+      }
+
+      define(360){
+         gradient(361) {
+            [255 255 204]
+            [204 153 0]
+            [255 255 204]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 100 && magnitude(z) < 10)
+      {
+         // Formula for iteration, note the use of the 'conj' function,
+         // this is responsible for the unique look of the resulting
+         // image.
+
+         z = sin(conj(c));
+         c = sqrt(c)/z;
+      }
+
+      // To chose the set of shades our color will be selected from:
+      //
+      // fmod($count, 2) * 360 => 0   (when $count is even)
+      // fmod($count, 2) * 360 => 360 (when $count is odd)
+      //
+      // Once we have selected the set of colors, our specific color
+      // is chosen via: degrees(z)
+
+      set_color(fmod($count, 2) * 360 + old_deg(z));
+   }
+}

@@ -1,0 +1,103 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2.98315789473684130000,
+       -1.97799999999999950000,
+       0.04842105263157936400,
+       1.75999999999999850000) => (777,960)
+   }
+
+   colors
+   {
+      define {
+         gradient(101) { [58 165 113][3 50 7]}
+      }
+      define {
+         gradient(101) { [3 50 7][58 165 113][3 50 7]}
+      }      
+
+   }
+
+   formula {
+     
+      z = current;      
+
+      $amax = 0; $amin = 0; $atot = 0;
+      $bmax = 0; $bmin = 0; $btot = 0;
+      $cmax = 0; $cmin = 0; $ctot = 0;
+     
+      $stop      = 0;
+      $d      = 0;
+      $tolerance = .01;
+
+      while($count < 10 && $stop == 0)
+      {     
+         $power = 2;
+
+         z = pow(-tan(z), -z);
+
+         if(abs(real(z)) < $tolerance)
+         { 
+            $d = abs(real(z)); $stop = 1; 
+         }
+         elseif(abs(imag(z)) < $tolerance) 
+         { 
+            $d = abs(imag(z)); $step = 1;
+         }
+         else
+         {
+            value = z*tan(z);
+            $a = real(value);
+            $b = imag(value);
+            $c = mag(value);
+
+            $atot = $atot + $a;
+            $btot = $btot + $b;
+            $ctot = $ctot + $c;
+
+            $amax = max($amax, $a);
+            $amin = min($amin, $a);
+
+            $bmax = max($bmax, $b);
+            $bmin = min($bmin, $b);
+
+            $cmax = max($cmax, $c);
+            $cmin = min($cmin, $c);
+         }
+      }
+
+      if($stop == 0)
+      {
+         $r = 0;
+         $g = 0;
+         $b = 0;
+
+         if($count > 0)
+         {
+            $r = (($atot / $count) - $amin) / ($amax - $amin);
+            $g = (($btot / $count) - $bmin) / ($bmax - $bmin);
+            $b = (($ctot / $count) - $cmin) / ($cmax - $cmin);
+                 
+
+            $r = get_sin_color($r, 255, 1);
+            $g = get_sin_color($g, 255, 1);
+            $b = get_sin_color($b, 255, 1);
+         }
+
+         set_color($r, $b, $g);
+      }
+      else
+      {      
+         set_color($d / $tolerance * 100);              
+      }
+   }
+}

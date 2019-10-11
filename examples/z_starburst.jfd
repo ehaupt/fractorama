@@ -1,0 +1,69 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.08000000000000000167,
+       -2.64000000000000012434,
+       4.24000000000000021316,
+       2.79999999999999982236) => (734,960)
+   }
+
+   colors {
+      define {
+         gradient(100) {
+            [255 255 0][153 0 0][0 51 102][255 255 0]
+         }
+      }
+   }
+
+
+   formula
+   {
+      f_c    = log(current);
+      zvalue = f_c / ( (f_c - 1) * (f_c - 3));
+     
+      $minValue = 0;
+      $maxValue = 0;
+      $tot      = 0;
+
+      point = cot(current);
+      zSum  = -1 / (2 * ((f_c - point) - 1));
+
+      $tolerance     = 1e-6;
+      $maxIterations = 20;
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         zValue = -3 * (((f_c - point) - 1) ^ $count) / (2 ^ ($count + 2));
+         zSum  += zValue;
+
+         $value = mag(csch(zSum));
+
+         $minValue = min($minValue, $value);
+         $maxValue = max($maxValue, $value);
+         $tot     += $value;
+      }
+
+      $index = 0;
+
+      if($count > 0)
+      {
+         $index = 100 * ($tot / $count - $minValue) / ($maxValue - $minValue);
+      }
+
+      set_color($index);
+   }
+}
+
+
+
+
+

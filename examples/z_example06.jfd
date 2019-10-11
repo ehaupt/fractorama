@@ -1,0 +1,79 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.91056086315119460000,
+       0.05647602130101070400,
+       1.90398513829979770000,
+       2.68173954847373300000) => (1280,960)
+   }
+
+   // Set up our colors, here we use two sections - the first a series
+   // of red shades, the second - a series of blue shades
+
+   colors {
+      define(0) {
+         gradient(361) {
+            [51 0 0]
+            [255 204 204]
+            [51 0 0]
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [0 0 51]
+            [204 204 255]
+            [0 0 51]
+         }
+      }
+   }
+   
+
+   // Set up our fractal
+
+   formula {
+
+      // Initialize variables
+
+      z = [0, 0];
+      c = current;
+
+      // Stopping condition
+
+      while($count < 100 && magnitude(z) < 100 && magnitude(c) < 100)
+      {
+         // Formula for iteration
+
+         z = log(sqrt(c*c - z*z));
+         c = exp(sqrt(c*c + z*z));
+      }
+
+      // Again, we see our familiar approach for color selection:
+      //
+      // fmod($count, 2) * 360 = 0   (when $count is even)
+      // fmod($count, 2) * 360 = 360 (when $count is odd)
+      // 
+      // our method for selecting the color within the section is a
+      // bit different:
+      //
+      // fmod(magnitude(z), 2) * 180;
+      //
+      // magnitude(z) is the distance from the origin (0, 0) of the point
+      // z when the above while loop terminated.  By doing:
+      // fmod(magnitude(z), 2) we end up with a value between 0 and 2 so
+      // we multiply by 180 so that we'll span the entire range of values
+      // in the chosen section of colors
+
+      set_color(
+         fmod($count, 2) * 360 + fmod(magnitude(z), 2) * 180
+      );
+   }
+}

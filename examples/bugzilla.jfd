@@ -1,0 +1,111 @@
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (1.84530210298903060000,
+       -1.39759509861252010000,
+       4.61037796438610140000,
+       1.39110744067051680000) => (457*7, 457*7)
+   }
+
+
+
+
+
+
+
+
+   formula
+   {
+      z          = current;
+      c          = current;
+      $tolerance = 1e-3;
+      $stop      = 0;
+      $xMin      = 0;
+      $xMax      = 0;
+      $xTot      = 0;
+      $yMin      = 0;
+      $yMax      = 0;
+      $yTot      = 0;
+      $mMax      = 0;
+      $mMin      = 0;
+      $mTot      = 0;
+
+      while($stop == 0 && $count < 20)
+      {
+         $x = real(z);
+         $y = imag(z);
+         $m = mag(z);
+
+         $xTot = $xTot + $x; $xMin = min($xMin, $x); $xMax = max($xMax, $x);
+         $yTot = $yTot + $y; $yMin = min($yMin, $y); $yMax = max($yMax, $y);
+         $mTot = $mTot + $m; $mMin = min($mMin, $m); $mMax = max($mMax, $m);
+
+         if($count > 0 && $x >= -2 && $x <= 2 && $y >= -2 && $y <= 2)
+         {
+            // very possibly within our trap area ...
+
+            $stop = 1;
+
+            if($x > 0)
+            {
+               if($y > 0)
+               {
+                  if($x > .25 && $x < 1.75 && $y > .25 && $y < 1.75) {
+                     $stop = 0;
+                  }
+               }
+               else
+               {
+                 if($x > .25 && $x < 1.75 && $y < -.25 && $y > -1.75) {
+                     $stop = 0;
+                  }
+               }
+            }
+            else
+            {
+               if($y > 0)
+               {
+                  if($x < -.25 && $x > -1.75 && $y > .25 && $y < 1.75) {
+                     $stop = 0;
+                  }
+               }
+               else
+               {
+                  if($x < -.25 && $x > -1.75 && $y < -.25 && $y > -1.75) {
+                     $stop = 0;
+                  }
+               }
+              
+            }
+            
+         }
+         
+         if($stop == 0)
+         {
+            z = z * cot(c);
+            c = sqrt(c+z);   
+         }
+      }
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {   
+         $r = (($xTot / $count) - $xMin) / ($xMax - $xMin);
+         $g = (($mTot / $count) - $mMin) / ($mMax - $mMin);
+         $b = (($yTot / $count) - $yMin) / ($yMax - $yMin);
+
+         $r = get_sin_color($r, 205, .8);
+         $g = get_sin_color($g, 255, 1.2);
+         $b = get_sin_color($b, 155, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+

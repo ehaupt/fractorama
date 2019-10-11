@@ -1,0 +1,147 @@
+fractal
+{
+   mapping {
+      (0.46901161078616166000,
+       -0.83057863465496662000,
+       0.50373272915661926000,
+       -0.78474310640294020000) => (607*20, 807*20)
+   }
+
+   formula
+   {
+      z = atan(current);
+      //z = z ^ z;
+
+      $v1min = $v2min = $v3min = $v4min = 0;
+      $v1max = $v2max = $v3max = $v4max = 0;
+      $v1tot = $v2tot = $v3tot = $v4tot = 0;
+
+      $gValue = 1;
+      $go = 1;
+
+      while($go == 1 && $count < 23 && ssq(z) <= 1e4)
+      {
+         //z = atan(z - csc(z));
+
+         $r = abs(real(z));
+         $i = abs(imag(z));
+
+         $r = cos(sin($r));
+         $i = cos(sin($i));
+
+         z = log(sec(z) ^ [$r, $i] - atan(z));
+
+         v  = log(z);
+         v  = acos(v);
+
+         for($i = 0; $i < 3; $i ++)
+         {
+            v = atan(v);
+
+            $a = abs(real(v));
+            $b = abs(imag(v));
+
+            $v = abs($a - $b);
+
+            switch($i)
+            {
+               case 0: { $v1 = $v; } break;
+               case 1: { $v2 = $v; } break;
+               case 2: { $v3 = $v; } break;
+            }
+
+            v = atan(v);
+         }
+
+         $v4 = min($v1, min($v2, $v3));
+
+         $v1min = ($count == 0 ? $v1 : min($v1min, $v1));
+         $v2min = ($count == 0 ? $v2 : min($v2min, $v2));
+         $v3min = ($count == 0 ? $v3 : min($v3min, $v3));
+         $v4min = ($count == 0 ? $v4 : min($v4min, $v4));
+
+         $v1max = ($count == 0 ? $v1 : max($v1max, $v1));
+         $v2max = ($count == 0 ? $v2 : max($v2max, $v2));
+         $v3max = ($count == 0 ? $v3 : max($v3max, $v3));
+         $v4max = ($count == 0 ? $v4 : max($v4max, $v4));
+
+         $v1tot += $v1;
+         $v2tot += $v2;
+         $v3tot += $v3;
+         $v4tot += $v4;
+
+         if($count > 5)
+         {
+            v = z*acos(z);
+
+            a = sec(v);
+            b = csc(v);
+
+            $a = sec(abs(imag(a)));
+            $b = csc(abs(imag(b)));
+
+            $t = .05;
+
+            if(($d = abs($a - $b)) <= $t)
+            {
+               $gValue = 1.35 - $d / $t;
+               $go = 0;
+            }
+         }
+      }
+
+      $r = $g = $b = 0;
+
+      if($count > 0)
+      {
+         $v1 = ($v1tot / $count - $v1min) / ($v1max - $v1min);
+         $v2 = ($v2tot / $count - $v2min) / ($v2max - $v2min);
+         $v3 = ($v3tot / $count - $v3min) / ($v3max - $v3min);
+         $v4 = ($v4tot / $count - $v4min) / ($v4max - $v4min);
+
+         $va = ($v1 + $v2 + $v3) / 3;
+
+         $f1 = .5;
+         $f2 = 1 - $f1;
+
+         $v1 = $v4 ^ ($f1 * $v1 + $f2 * $va);
+         $v2 = $v4 ^ ($f1 * $v2 + $f2 * $va);
+         $v3 = $v4 ^ ($f1 * $v3 + $f2 * $va);
+
+         $o1 = $o2 = 205;
+
+         if($count % 3 == 0)     { $o1 = 255; }
+         elseif($count % 3 == 2) { $o2 = 255; }
+        
+         $r = get_sin_color($v1, $o1, 1.25);
+         $g = get_sin_color($v2, 255, 1.5);    
+         $b = get_sin_color($v3, $o2, 1.5);
+
+
+         if(false && $go == 1)
+         {
+            $r = $g = $b = 0;
+         }
+         else
+         {
+            $r = gamma($r, $gValue);
+            $g = gamma($g, $gValue);
+            $b = gamma($b, $gValue);
+         }
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+

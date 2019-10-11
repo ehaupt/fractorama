@@ -1,0 +1,75 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal
+{
+   mapping {
+      (-1.20751054852320671706,
+       -0.00410370370370372398,
+       -1.03521800281293963053,
+       0.18308148148148148393) => (885,960)
+   }
+
+
+   formula
+   {
+      z = [0, 0];
+     
+      $aMin = 0; $aMax = 0; $aTot = 0;
+      $bMin = 0; $bMax = 0; $bTot = 0;
+      $cMin = 0; $cMax = 0; $cTot = 0;
+
+      while($count < 64 && ssq(z) < 4)
+      {
+         zOld = z;
+
+         z += current;
+
+         if($count % 2 == 0) { z = z^current; }
+         else                { z = current^z; }
+
+         value = z - zOld;
+      
+         $diff  = mag(value);
+         $aMin  = min($diff, $aMin);
+         $aMax  = max($diff, $aMax);
+         $aTot += $diff;
+
+         $diff  = mag(sec(value));
+         $bMin  = min($diff, $bMin);
+         $bMax  = max($diff, $bMax);
+         $bTot += $diff;
+
+         $diff  = mag(csc(value));
+         $cMin  = min($diff, $cMin);
+         $cMax  = max($diff, $cMax);
+         $cTot += $diff;
+      }
+
+      $r = 0; $g = 0; $b = 0;
+
+      if($count > 0)
+      {
+         $r = (($aTot / $count) - $aMin) / ($aMax - $aMin);
+         $g = (($bTot / $count) - $bMin) / ($bMax - $bMin);
+         $b = (($cTot / $count) - $cMin) / ($cMax - $cMin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+

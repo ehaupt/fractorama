@@ -1,0 +1,72 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2, -2, 2, 2) => (1280,960)
+   }
+
+   // Set up our colors - the first set of colors will be shades of
+   // yellow, the second shades of blue/purple
+
+   colors {
+      define(0) {
+         gradient(361) {
+            [255 255 204][204 153 0][255 255 204]
+         }
+      }
+      define(360) {
+         gradient(361) {
+            [0 0 51][204 204  255][0 0 51]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      z    = current;
+      c    = current;
+
+      // Again, note the use of the exp/log combination and the
+      // results produced
+
+      while(magnitude(z) < 20 && magnitude(c) < 20 && $count < 100)
+      {
+         z = exp(log(z) + sqrt(log(c)));
+         c = log(exp(z) + sqrt(exp(c)));
+      }
+
+      // We want to alternately select between our first set of colors
+      // and the second set of colors.  We first calculate the index
+      // value using
+      //
+      // $value = abs(sin(old_rad(z) + old_rad(c))) * 360;
+      //
+      // we know sin(anything) produces a value between -1 and 1 so taking
+      // the absolute value produces a value between 0 and 1 and multiplying
+      // by 360 gives us a value between 0 and 360.
+      //
+      // we then use our if statement to set_color($value) if
+      // $count was even (fmod($count, 2) == 0) and to set_color(360 + $value)
+      // if $count was odd
+
+      $value = abs(sin(old_rad(z) + old_rad(c))) * 360;
+
+      if(fmod($count, 2) == 0)
+      {
+         set_color($value);
+      }
+      else
+      {
+         set_color(360 + $value);
+      }
+   }
+}

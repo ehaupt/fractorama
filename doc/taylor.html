@@ -1,0 +1,325 @@
+<HTML>
+ <HEAD><TITLE>taylor series fractals</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+
+ <CENTER><H2>Taylor Series Fractals</H2></CENTER>
+ <HR>
+ <P>
+ The taylor series is a mechanism for approximating a function by
+ summing polynomial terms.
+ <P>
+ First, some definitions:
+ <P>
+ <TABLE BORDER=1>
+  <TR>
+   <TD>f(x)</TD>
+   <TD>the function to approximate</TD>
+  </TR>
+
+  <TR>
+   <TD>f<sup>n</sup>(x)</TD>
+   <TD>the nth derivative of f (note that f<sup>0</sup>(x) = f(x))
+  </TR>
+
+  <TR>
+   <TD>n!</TD>
+   <TD>n factorial, n! = n * (n - 1) * (n - 2) * ... * 2
+  </TR>
+
+ </TABLE>
+ <P>
+ The taylor series expansion of f(x) around a point (c) is then
+ written:
+ <PRE>
+
+        n -> infinity
+        +----
+         \      f<sup>n</sup>(c) * (x - c) <sup>n</sup>
+  f(x) = +      -----------------
+         /             n!
+        +----
+        n = 0
+ </PRE>
+ <P>
+ As an example, consider the case where:
+ <P>
+ <TABLE BORDER=0>
+  <TR>
+   <TD>f(x)</TD>
+   <TD>=></TD>
+   <TD>exp(x)</TD>
+  </TR>
+  <TR>
+   <TD>c</TD>
+   <TD>=></TD>
+   <TD>0</TD>
+  </TR>
+ </TABLE>
+ <P>
+ Since the derivative of exp(x) is exp(x) we know that
+ f<sup>n</sup>(x) = exp(x) for all n.
+ <P>
+ Here are the first few terms of the series:
+ <P>
+ <TABLE BORDER=1>
+  <TR>
+   <TH>value of n</TH>
+   <TH>term</TH>
+   <TH>value of term</TH>
+  </TR>
+  <TR>
+   <TD>0</TD>
+   <TD>exp(0) * (x - 0)<sup>0</sup> / 0!</TD>
+   <TD>1</TD>
+  </TR>
+  <TR>
+   <TD>1</TD>
+   <TD>exp(0) * (x - 0)<sup>1</sup> / 1!</TD>
+   <TD>x</TD>
+  </TR>
+  <TR>
+   <TD>2</TD>
+   <TD>exp(0) * (x - 0)<sup>2</sup> / 2!</TD>
+   <TD>x<sup>2</sup> / 2</TD>
+  </TR>
+  <TR>
+   <TD>3</TD>
+   <TD>exp(0) * (x - 0)<sup>3</sup> / 3!</TD>
+   <TD>x<sup>3</sup> / 6</TD>
+  </TR>
+  <TR>
+   <TD>4</TD>
+   <TD>exp(0) * (x - 0)<sup>4</sup> / 4!</TD>
+   <TD>x<sup>4</sup> / 24</TD>
+  </TR>
+ </TABLE>
+ <P>
+ We can write the expansion of exp(x) around c = 0 more concisely
+ as follows:
+ <P>
+ <PRE>
+        n -> infinity
+        +----
+         \      x<sup>n</sup>
+  f(x) = +      --
+         /      n!
+        +----
+        n = 0
+ </PRE>
+ <P>
+ Now lets look at how accurate the approximation is as we add more
+ terms.  In this case, lets use x = 3.
+ <P>
+ <TABLE BORDER=1>
+  <TR>
+   <TH>exp(3)</TH>
+   <TH>n</TH>
+   <TH>sum</TH>
+   <TH>approximation</TH>
+   <TH>difference</TH>
+  </TR>
+  <TR>
+   <TH>20.08553692318766774092</TH>
+   <TH>0</TH>
+   <TH>1</TH>
+   <TH>1</TH>
+   <TH>19.08553692318766774092</TH>
+  </TR>
+  <TR>
+   <TH>20.08553692318766774092</TH>
+   <TH>1</TH>
+   <TH>1 + x</TH>
+   <TH>4</TH>
+   <TH>16.08553692318766774092</TH>
+  </TR>
+  <TR>
+   <TH>20.08553692318766774092</TH>
+   <TH>2</TH>
+   <TH>1 + x + x<sup>2</sup>/2</TH>
+   <TH>8.5</TH>
+   <TH>11.58553692318766774092</TH>
+  </TR>
+  <TR>
+   <TH>20.08553692318766774092</TH>
+   <TH>3</TH>
+   <TH>1 + x + x<sup>2</sup>/2 + x<sup>3</sup>/6</TH>
+   <TH>13</TH>
+   <TH>7.08553692318766774092</TH>
+  </TR>
+  <TR>
+   <TH>20.08553692318766774092</TH>
+   <TH>4</TH>
+   <TH>1 + x + x<sup>2</sup>/2 + x<sup>3</sup>/6 + x<sup>4</sup>/24</TH>
+   <TH>16.375</TH>
+   <TH>3.71053692318766774092</TH>
+  </TR>
+ </TABLE>
+ <P>
+ As you can see, the approximation converges pretty rapidly on the
+ actual value of exp(x).
+ <P>
+ Ok, so how do we apply this to generating a fractal? Firstly, all
+ the statements about 'x' above apply equally well to 'z' where z
+ is the complex number (x + iy).
+ <P>
+ In our case, assume 'current' is the point 'z' for which we wish to
+ create an approximation of exp(z).  Our algorithm (in pseudo code)
+ looks like this:
+ <P>
+ <pre>
+ set actualValue   = exp(current)
+ set maxIterations = 20
+ set tolerance     = .00001
+ set count         = 0
+ set zSum          = [0, 0]
+ set denominator   = 1
+
+ while count is less than maxIterations and
+       the magnitude of the difference between actualValue and zSum is
+       greater than tolerance
+ do
+    zSum  = zSum + current<sup>count</sup> / denominator
+
+    if count is greater than 0
+       denominator = denominator * (count + 1)
+    endif
+
+    count = count + 1
+ done
+ </pre>
+ <P>
+ In this example, our expansion point (c) is zero, we can readily
+ generalize our algorithm to handle other values of (c)
+ <P>
+ <pre>
+ set actualValue   = exp(current)
+ set maxIterations = 20
+ set tolerance     = .00001
+ set count         = 0
+ set zSum          = [0, 0]
+ set denominator   = 1
+ set c             = [2, 3]
+ set cValue        = exp(c)
+
+ while count is less than maxIterations and
+       the magnitude of the difference between actualValue and zSum is
+       greater than tolerance
+ do
+    zSum  = zSum + cValue * (current - c)<sup>count</sup> / denominator
+
+    if count is greater than 0
+       denominator = denominator * (count + 1)
+    endif
+
+    count = count + 1
+ done
+ </pre>
+ <P>
+ Finally, here is a full-on fractorama formula file demonstrating this
+ technique
+ <P>
+ <PRE>
+fractal
+{
+   mapping {
+      (-2.33672316384180778215,
+       3.41009999999999990905,
+       1.18621468926553697010,
+       8.00000000000000000000) => (150, 195)
+   }
+
+
+   formula
+   {
+      // The value we wish to approximate
+
+      zvalue = exp(current);
+
+      $xavg = 0;    
+      $yavg = 0;    
+      $mavg = 0;    
+
+      $xmax = 0;    
+      $ymax = 0;    
+      $mmax = 0;    
+
+      $xtot = 0;    
+      $ytot = 0;    
+      $mtot = 0;    
+ 
+      $maxIterations = 15;
+      $tolerance     = 1e-6;
+
+      zSum           = 0;
+      $denominator   = 1;
+
+      // The point around which we'll create our expansion.  We use
+      // exp(current) here but we could just as well have used:
+      //
+      // point = [2, 3]
+      // point = sin(current)
+      // etc.
+      //
+      // There is no special significance to the fact that we're using
+      // exp(current) and we're attempting to approximate exp.
+
+      point = exp(current);
+
+      // Loop until we've been through the loop '$maxIterations' times
+      // or we deem that zSum is close enough to zvalue
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         zSum += exp(point) * ((current - point) ^ $count) / $denominator;
+
+         if($count > 0) { $denominator *= ($count + 1); }
+
+         value = cot(zSum);
+
+         $x = mag(value ^ .1);
+         $y = mag(value ^ .2);
+         $m = mag(value ^ .4);
+
+         $xavg = ($x + $xavg * $count) / ($count + 1);
+         $yavg = ($y + $yavg * $count) / ($count + 1);
+         $mavg = ($m + $mavg * $count) / ($count + 1);
+
+         $xdev = sqrt(($x - $xavg) * ($x - $xavg));
+         $ydev = sqrt(($y - $yavg) * ($y - $yavg));
+         $mdev = sqrt(($m - $mavg) * ($m - $mavg));
+
+         $xmax = max($xmax, $xdev);
+         $ymax = max($ymax, $ydev);
+         $mmax = max($mmax, $mdev);
+
+         $xtot += $xdev;
+         $ytot += $ydev;
+         $mtot += $mdev;
+      }
+
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot/$count) / $xmax;
+         $g = ($ytot/$count) / $ymax;
+         $b = ($mtot/$count) / $mmax;
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+</pre>
+<P>
+And here is the resulting image:
+<P>
+<IMG SRC="taylor.png">
+ </BODY>
+</HTML>

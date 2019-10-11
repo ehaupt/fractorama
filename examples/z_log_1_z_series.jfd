@@ -1,0 +1,126 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-1.89999999999999991118,
+       -1.87999999999999989342,
+       2.04000000000000003553,
+       1.93999999999999994671) => (989,960)
+   }
+
+
+   formula
+   {
+      zvalue = log(1 + current);
+
+      $xmax = 0;    
+      $ymax = 0;    
+      $mmax = 0;    
+
+      $xmin = 0;    
+      $ymin = 0;    
+      $mmin = 0;    
+
+      $xtot = 0;    
+      $ytot = 0;    
+      $mtot = 0;    
+ 
+      // Changing these values can produce interesting variations
+
+      $maxIterations = 20;
+      $tolerance     = 1e-6;
+
+      zSum = 0;
+
+      // 'point' is the point around which we'll create our series
+      // approximation, many nice variations result from changing
+      // the value of 'point' here.
+      //
+      // Examples:
+      //
+      // point = sinh(current);
+      // point = cosh(current);
+
+      point = current ^ current;
+
+      // Loop until we've been through the loop '$maxIterations' times
+      // or we deem that zSum is close enough to zvalue
+
+      while($count < $maxIterations && ssq(zvalue - zSum) > $tolerance)
+      {
+         $factor = 1;
+
+         if($count % 2 == 1) { $factor = -1; }
+
+         zSum += $factor * (current - point) ^ ($count + 1) / ($count + 1);
+
+         // More variations can be explored by changing
+         // the value of 'value' below, for example:
+         //
+         // 1) Use a different calculation for 'value' based upon
+         //    whether this is an even or odd pass through our loop
+         //
+         // if($count % 2) == 0) { value = coth(zSum); }
+         // else                 { value = tanh(zSum); }
+         //
+         // 2) Additional variations
+         //
+         // value = log(zSum);
+         // value = sec(zSum);
+
+         if($count % 2 == 0) { value = cot(zSum); }
+         else                { value = tan(zSum); }
+
+         $x = mag(value ^ 2);
+         $y = mag(value ^ 3);
+         $m = mag(value ^ 4);
+
+         $xtot += $x; $ytot += $y; $mtot += $m;
+
+         $xmin = min($xmin, $x);
+         $ymin = min($ymin, $y);
+         $mmin = min($mmin, $m);
+
+         $xmax = max($xmax, $x);
+         $ymax = max($ymax, $y);
+         $mmax = max($mmax, $m);
+      }
+
+
+      $r = 0;
+      $g = 0;
+      $b = 0;
+
+      if($count > 0)
+      {
+         $r = ($xtot / $count - $xmin) / ($xmax - $xmin);
+         $g = ($ytot / $count - $ymin) / ($ymax - $ymin);
+         $b = ($mtot / $count - $mmin) / ($mmax - $mmin);
+
+         $r = get_sin_color($r, 255, 1);
+         $g = get_sin_color($g, 255, 1);
+         $b = get_sin_color($b, 255, 1);
+      }
+
+      set_color($r, $g, $b);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,81 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2, -2, 2, 2) => (960,960)
+   }
+
+
+
+
+   formula {
+     
+      z = current;
+      zold = [-10, -10];
+
+      $xmax = 0;
+      $xmin = 0;
+      $xtot = 0;
+      $ymax = 0;
+      $ymin = 0;
+      $ytot = 0;
+      $mmax = 0;
+      $mtot = 0;
+     
+      $stop = 0;
+      $tolerance = 1e-10;
+
+      while($stop == 0 && $count < 50)
+      {
+         if(abs(real(z) - real(zold)) <= $tolerance &&
+            abs(imag(z) - imag(zold)) <= $tolerance)
+         {
+            $stop = 1;
+         }
+         else
+         {
+            zold = z;
+            z    = z - ( (log(z) + cos(z)) / (1/z - sin(z)));
+         
+        
+            $x = real(z);
+            $y = imag(z);
+            $m = mag(z);
+
+            $xtot = $xtot + $x;
+            $ytot = $ytot + $y;
+            $mtot = $mtot + $m;
+
+            $xmax = max($xmax, $x);
+            $xmin = min($xmin, $x);
+
+            $ymax = max($ymax, $y);
+            $ymin = min($ymin, $y);
+
+            $mmax = max($mmax, $m);
+         }
+      }
+
+      $red   = 0;
+      $green = 0;
+      $blue  = 0;
+
+      if($count > 0)
+      {
+      
+         $red   = (($xtot / $count) - $xmin) / ($xmax - $xmin) * 255;
+         $green = abs(sin(($mtot / $count) / $mmax)) * 255;
+         $blue  = (($ytot / $count) - $ymin) / ($ymax - $ymin) * 255;
+      }
+
+      set_color($red, ($blue + $red) / 2, $blue);
+   }
+}

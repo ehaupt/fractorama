@@ -1,0 +1,101 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (-2, -2, 2, 2) => (960,960)
+   }
+
+
+
+
+   formula {
+      a = [0, 0];
+      b = [0, 0];
+      c = [0, 0];
+      z = current;
+
+      $first = 0;
+
+      $amax = 0;
+      $bmax = 0;
+      $cmax = 0;
+      $amin = 0;
+      $bmin = 0;
+      $cmin = 0;
+      $atot = 0;
+      $btot = 0;
+      $ctot = 0;
+
+      $stop = 1e5;
+
+      while($count < 20 && ssq(a) < $stop && ssq(b) < $stop && ssq(c) < $stop)
+      {
+         if(fmod($count, 3) == 0)
+         {
+            a = sin(a) * b + z;
+         }
+         else 
+         {
+            if(fmod($count, 3) == 1)
+            {
+               b = cos(b) * c + z;
+            }
+            else
+            {
+               c = tan(c) * a + z;
+            }
+         }
+
+         $amax = max(mag(a), $amax);
+         $bmax = max(mag(b), $bmax);
+         $cmax = max(mag(c), $cmax);
+
+         $atot = $atot + mag(a);
+         $btot = $btot + mag(b);
+         $ctot = $ctot + mag(c);
+
+
+
+         z = sqrt(sqrt(sqrt(z)));
+               
+      }
+
+      $red   = 0;
+      $green = 0;
+      $blue  = 0;
+
+      
+     
+         $red   = (($atot / $count) / $amax) * 255;
+         $green = (($btot / $count) / $bmax) * 255;
+         $blue  = (($ctot / $count) / $cmax) * 255;
+    
+
+      set_color($red, $green, $blue);
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

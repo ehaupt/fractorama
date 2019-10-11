@@ -1,0 +1,123 @@
+<HTML>
+ <HEAD><TITLE>Mapping</TITLE></HEAD>
+ <BODY BGCOLOR="#FFFFFF">
+  <HR>
+   <H2>Mapping Section</H2>
+  <HR>
+  <P>
+  The mapping section establishes two things:
+  <P>
+  <UL>
+   <LI>The region of the complex plane in which we are interested
+   <LI>The size of the image (in pixels) into which our complex region
+       will be mapped
+  </UL>
+  <P>
+  The general form of the <B>mapping</B> section is as follows:
+  <P>
+   <PRE>
+      mapping
+      {
+         ( real_start, imaginary_start, real_end, imaginary_end ) =>
+         ( x_pixels, y_pixels )
+      }
+   </PRE>
+  <P>
+  Here is a typical example and a diagram that graphically shows the meaning
+  of the mapping:
+  <P>
+   <PRE>
+      mapping
+      {
+         (-2, -2, 2, 2) => (640, 480)
+      }
+   </PRE>
+  <P>
+  <IMG SRC="graph2.png">
+  <P>
+  Some points worth noting in the above example:
+  <P>
+  <UL>
+   <LI>The region we are mapping from is square (-2, -2, 2, 2) but the
+       size we are mapping to (640, 480) is not.  We could have just as
+       easily mapped to a square region (400 x 400 pixels for example) but
+       this example demonstrates that the dimensions of our region and
+       our pixel sizes do not have to be the same proportions.
+   <P>
+   <LI>Our region is ordered in the form:
+   <P>
+    <OL>
+     <LI>low real value (-2)
+     <LI>low imaginary value (-2)
+     <LI>high real value (2)
+     <LI>high imaginary value (2)
+    </OL>
+   <P>
+   But this is not a requirement.  You can reverse your image horizontally
+   by swapping the first and third (real) values, you can invert your image
+   vertically by swapping the second and fourth (imaginary) values.
+  </UL>
+  <P>
+  Another useful feature is the ability to specify values using mathematical
+  expressions, rather than just numbers.  As an example, suppose you have
+  created an image whose mapping section looks like this:
+  <P>
+  <PRE>
+   mapping
+   {
+      (-0.41386029741100522000,
+       -1.42541871282411380000,
+       1.98659894437602790000,
+       1.41319953487773910000) => (417, 346)
+   }
+  </PRE>
+  <P>
+  If you decided you wanted to create a larger version of the image (the
+  size in pixels, not the selected region) you can double its width and
+  height by doing:
+  <P>
+  <PRE>
+   mapping
+   {
+      (-0.41386029741100522000,
+       -1.42541871282411380000,
+       1.98659894437602790000,
+       1.41319953487773910000) => (417 * 2, 346 * 2)
+   }
+  </PRE>
+  <P>
+  In practice, this is a very useful feature.  You can use any expression
+  you like that involves:
+  <P>
+  <UL>
+   <LI>numbers
+   <LI>operators: +, -, *, /
+   <LI>parentheses
+  </UL>
+  <P>
+  The only restrictions are that the sizes in pixels must work out to be
+  a number > 0 for both width and height.  Here is an example demonstrating
+  the use of more complicated expressions:
+  <P>
+  <PRE>
+   mapping
+   {
+      (2 - 4, 3 - 5, (.25 + .25) * 4, 6 / 3) =>
+      ((1 + 2 + 3 + 4) * 64, 2 * 2 * 120)
+   }
+  </PRE>
+  <P>
+  Of course the above example just works out to be our original example
+  (after evaluating the expressions)
+  <P>
+   <PRE>
+      mapping
+      {
+         (-2, -2, 2, 2) => (640, 480)
+      }
+   </PRE>
+  <P>
+  But it does demonstrate the range of possibilities available for
+specifying the region and pixel values.
+ </BODY>
+</HTML>

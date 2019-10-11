@@ -1,0 +1,231 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal 
+{
+  mapping {
+      (-6.77222222222222480781,
+       -7.74805194805194297203,
+       6.77456018518518376936,
+       4.02792207792207967998) => (1245,960)
+   }
+
+
+
+
+
+
+
+  formula 
+  {
+    c = current * [0, 1];
+    z = c;
+
+    $const2PI = 6.28318;
+    $constPI  = 3.14159;
+
+    // z    = z^3   + c*z^2 - 1;  // the function
+    // z'   = 3*z^2 + c*2*z;      // 1st derivative
+    // z''  = 6*z   + c*2;            // 2nd derivative
+    // 6*z + 2*c = 0;
+    // z     = -c/3;
+
+    z = -z/3;
+
+    z1 = 1;
+    $maxit = 6;
+    z2 = [0,0];
+
+    $xtot = 0;
+    $ytot = 0;
+
+    $xmean = 0;
+    $ymean = 0;
+
+    $xavg = 0;
+    $yavg = 0;
+
+    $xmin = 1e24;
+    $xmax = 0;
+
+    $ymin = 1e24;
+    $ymax = 0;
+
+    $xtmp = 0;
+    $ytmp = 0;
+
+    $xdata = 0;
+    $ydata = 0;
+
+    $x_std = 0;
+    $y_std = 0;
+
+    $dFDx = 0;
+    $dFDy = 0;
+
+    xtmp = [0, 0];
+    ytmp = [0, 0];
+    trap = [0.5, 0];
+
+    $iteration = 0;
+    
+    while ($count < $maxit && sum_of_squares(z1-z) > 1e-24)   // N-Set
+    //while ($count < $maxit && sum_of_squares(z) < 1e3)      // M-Set
+    {  
+      $xtmp = abs(real(z));
+      $ytmp = abs(imag(z));
+
+      $iteration = $count-2;
+
+      if ($iteration > 0)
+      {
+        $xmean = $xmean + $xtmp;
+        $xavg  = $xmean/$iteration;
+
+        $ymean = $ymean + $ytmp;
+        $yavg  = $ymean/$iteration;
+
+        $xdata = $xtmp - $xavg;
+        $ydata = $ytmp - $yavg;
+
+        $x_std = $x_std + $xdata*$xdata;
+        $y_std = $y_std + $ydata*$ydata;
+
+        // get the X max
+        if ($xtmp > $xmax) 
+        {
+          $xmax = $xtmp; 
+        }
+
+        // get the X min
+        if ($xtmp < $xmin) 
+        {
+          $xmin = $xtmp; 
+        }
+
+        // get the Y max
+        if ($ytmp > $ymax) 
+        {
+          $ymax = $ytmp; 
+        }
+
+        // get the Y min
+        if ($ytmp < $ymin) 
+        {
+          $ymin = $ytmp; 
+        }
+      }
+
+      z1 = z;      
+      z2 = z*z;
+      z = z - (z*z2 + c*z2 - z*sin(z) - sin(z)*z)/(3*z2 + 2*c*z - cos(z) - cos(z)*z*c);
+      if(fmod($count, 2) == 0) { c = cos(z)+exp(c); }
+      else                     { c = sin(z)+log(c); }
+      //z = sin(z);
+     
+      //z=z+c;
+     
+    }
+
+    $x_std = sqrt((2*$x_std)/$iteration);
+    $y_std = sqrt((2*$y_std)/$iteration);
+    
+    $denominator = 0;
+    $denominator = abs(log($iteration));
+
+    $xrange = abs($xmax - $xmin);
+    $yrange = abs($ymax - $ymin);
+
+    $dFDx = abs(log($xrange/($iteration*$x_std)))/$denominator;
+    $dFDy = abs(log($yrange/($iteration*$y_std)))/$denominator;
+
+    $xtot = abs($dFDx);
+    $ytot = abs($dFDy);
+
+    // "Start" Color variables should be in range from 0 to 255
+    $red_Start = 225;
+    $grn_Start = 125;
+    $blu_Start = 05;
+
+    // "Step" Color variables should be in range from 0 to about 2
+    $red_Step = 4.0;
+    $grn_Step = 4.0;
+    $blu_Step = 5.0;
+
+    // Sine function Coloring algorithm starts here
+    $r = sqrt($xtot);
+    $g = sqrt($ytot);
+    $b = ($r+$g)*0.5;
+    $g = ($g+$b)*0.5;  // make it a bit of gray scale
+
+    $t1 =  -cos($const2PI*$r);
+    $t2 =  -cos($const2PI*$g);
+    $t3 =  -cos($const2PI*$b);
+
+    $t1 = $t1*127+127;
+    $t2 = $t2*127+127;
+    $t3 = $t3*127+127;
+
+    $t1 = $t1*$red_Step+$red_Start;
+    $t2 = $t2*$grn_Step+$grn_Start;
+    $t3 = $t3*$blu_Step+$blu_Start;
+
+    $t1 = $t1/360;
+    $t2 = $t2/360;
+    $t3 = $t3/360;
+
+    $r =  sin($constPI*$t1);
+    $g =  sin($constPI*$t2);
+    $b =  sin($constPI*$t3);
+
+    $red = ($r*128) + 127;
+    $grn = ($g*128) + 127;
+    $blu = ($b*128) + 127;
+
+    //  the new coloring function
+
+    if ($xtot == 0 && $ytot == 0)
+    {
+      set_color ( 000, 000, 000 );
+    }
+    else
+    {
+      set_color ( $red, $grn, $blu );
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal
+{
+   mapping
+   {
+      (-0.41386029741100522000,
+       -1.42541871282411380000,
+       1.98659894437602790000,
+       1.41319953487773910000) => (1202,960)
+   }
+  
+   colors
+   {
+      define(0)
+      {        
+         gradient(181) { [204 153 0] [255 255 204] [204 153 0] }                
+      }
+      define(180)
+      {
+         gradient(181) { [0 51 0] [204 255 204] [0 51 0] }
+      }
+   }
+  
+   formula 
+   {
+      z = [0, 0];
+      c = current;     
+
+      while($count < 100 && ssq(z) < 4)
+      {
+         if(fmod($count, 2) == 0)
+         {
+            z  = log(c) * cos(z);
+            c  = sqrt(z);           
+         }
+         else
+         {
+            c  = log(z) + cos(c);
+            z  = sqrt(c);            
+         }         
+      }
+
+      $index = old_deg(z - c);
+
+      set_color($index); 
+   }
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+/****************************************************************************
+ * This formula file or any formula file derived from it cannot be used for
+ * commercial purposes or to create hard copy output without the explicit
+ * consent of the original author.
+ ****************************************************************************/
+
+fractal {
+
+   // Establish the mapping between complex coordinates
+   // and display coordinates
+
+   mapping {
+      (0.39128298430482694000,
+       0.48613255588101772000,
+       0.39291337479784333000,
+       0.48741075028616732000) => (1280,960)
+   }
+
+
+   // Set up our colors - a smooth gradient of cyan colors, from
+   // light => dark => light
+
+   colors {
+      define {
+         gradient(361) {
+            [204 255 255] [0 51 51] [204 255 255]
+         }
+      }
+   }
+
+   // Set up our fractal
+
+   formula {
+      z    = current;
+      c    = current - sin(z);
+      x    = [0, 0];
+
+      while(magnitude(z) < 5 && $count < 100)
+      {
+         c = current + c / z - z;
+         z = z * current + c / z;
+         x = c - z;
+      }
+
+      // -1 <= sin(magnitude(x)) <= 1, so 0 <= abs(sin(magnitude(x))) <= 1.
+      // We multiply that result by 360 to ensure our resulting color
+      // values span all the values in our defined color table
+
+      set_color(abs(sin(magnitude(x))) * 360);
+   }
+}
+
+
